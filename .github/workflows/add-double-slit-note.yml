@@ -1,0 +1,73 @@
+name: Add double-slit reader note
+
+on:
+  push:
+    paths:
+      - '.github/workflows/add-double-slit-note.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Insert dedicated double-slit note
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+
+          path = Path('only-the-science/index.html')
+          s = path.read_text(encoding='utf-8')
+
+          # 1. Remove the nested double-slit link from Note E, returning E to matter waves only.
+          s = s.replace('<div class="go"><strong>Visual explainer</strong><p><a href="./double-slit/">See the double-slit experiment: classical particles, waves, and quantum interference.</a></p></div>', '')
+
+          # 2. Shift existing reader notes F–N forward one letter, working backwards to avoid collisions.
+          letters = list('FGHIJKLMN')
+          shifted = {c: chr(ord(c)+1) for c in letters}
+          for old in reversed(letters):
+              new = shifted[old]
+              s = s.replace(f'data-note="{old}"', f'data-note="{new}"')
+              s = s.replace(f"data-note='{old}'", f"data-note='{new}'")
+              s = s.replace(f'Reader’s Note {old}', f'Reader’s Note {new}')
+              s = s.replace(f"\n{old}:{{title:", f"\n{new}:{{title:")
+
+          # 3. Update the visible note-index letters after their data-note attributes have shifted.
+          for old in reversed(letters):
+              new = shifted[old]
+              s = re.sub(rf'(<button[^>]*data-note="{new}"[^>]*>){old}(</button>)', rf'\1{new}\2', s)
+
+          # 4. Add a visible F marker to the first sentence introducing quantum mechanics.
+          old_para = '<p>Quantum mechanics had become astonishingly successful, but with that success came an unsettling interpretation. At the deepest level, reality seemed not merely difficult to predict, but fundamentally probabilistic.<button class="note-ref" data-note="G" aria-label="Open Reader’s Note G">G</button></p>'
+          new_para = '<p>Quantum mechanics had become astonishingly successful, but with that success came an unsettling interpretation.<button class="note-ref" data-note="F" aria-label="Open Reader’s Note F">F</button> At the deepest level, reality seemed not merely difficult to predict, but fundamentally probabilistic.<button class="note-ref" data-note="G" aria-label="Open Reader’s Note G">G</button></p>'
+          if old_para not in s:
+              raise SystemExit('Quantum mechanics paragraph not found')
+          s = s.replace(old_para, new_para, 1)
+
+          # 5. Insert F into the Reader's Notes index after E.
+          marker = '<button data-note="E">E</button>'
+          if marker not in s:
+              raise SystemExit('Note E index button not found')
+          s = s.replace(marker, marker + '<button data-note="F">F</button>', 1)
+
+          # 6. Add the new Note F immediately after Note E in the notes dictionary.
+          note_e_end = '<p class="doc">Documentation: sources 3 and 5.</p>`},\nG:{title:'
+          if note_e_end not in s:
+              raise SystemExit('Shifted Note E/G boundary not found')
+          new_f = '''<p class="doc">Documentation: sources 3 and 5.</p>`},
+F:{title:'The double slit — quantum theory in one experiment',body:`<p>One experiment captures much of what made quantum theory so unsettling. Send ordinary particles through two openings and you expect two concentrations on the screen behind them. Send waves through the same openings and the waves overlap, producing an interference pattern.</p><p>Electrons complicate the picture. They arrive on the detector one at a time, as localized impacts, yet over many repetitions those impacts build up into an interference pattern. The result does not by itself tell us which interpretation of quantum mechanics is correct. It tells us that the old choice between “particle” and “wave” is no longer enough.</p><div class="go"><strong>Visual explainer</strong><p><a href="./double-slit/">Open the double-slit experiment: classical particles, waves, and quantum interference.</a></p></div><p>This is the phenomenon first. The later pilot-wave discussion asks a different question: what account of reality could produce it?</p><p class="doc">Conceptual companion to sources 5–6.</p>`},
+G:{title:'''
+          s = s.replace(note_e_end, new_f, 1)
+
+          path.write_text(s, encoding='utf-8')
+          PY
+      - name: Commit changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add only-the-science/index.html
+          git commit -m "Add dedicated double-slit reader note"
+          git push
