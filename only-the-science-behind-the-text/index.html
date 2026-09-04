@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#f4efe5">
+<title>Only the Science: Behind the Text</title>
+<meta name="description" content="A layered reading of Only the Science: from its surface portrait of Louis de Broglie to the deeper ideas carried by its structure, method, and intended reader.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#f4efe5;
+  --ink:#1d1b18;
+  --soft:#5d564d;
+  --faint:#81786b;
+  --rule:#cfc4b4;
+  --accent:#5f3941;
+  --d1:#f4efe5;
+  --d2:#f0eae3;
+  --d3:#ebe4df;
+  --d4:#e5dcd9;
+  --d5:#ddd2d0;
+  --d6:#d5c8c7;
+  --max:720px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:"Source Serif 4",Georgia,serif;font-size:19px;line-height:1.72;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+a{color:var(--accent)}
+.progress{position:fixed;top:0;left:0;height:2px;width:0;background:var(--accent);z-index:100}
+.topbar{position:fixed;top:0;left:0;right:0;z-index:60;display:flex;justify-content:space-between;align-items:center;padding:.8rem max(1rem,env(safe-area-inset-left));background:linear-gradient(to bottom,rgba(244,239,229,.96),rgba(244,239,229,.76),transparent);pointer-events:none}
+.topbar a{pointer-events:auto;text-decoration:none;color:var(--accent);font:600 .66rem/1 Inter,sans-serif;letter-spacing:.1em;text-transform:uppercase;padding:.5rem}
+.hero{min-height:88vh;display:grid;place-items:center;padding:8rem 1.4rem 5rem;background:var(--d1)}
+.hero-inner{max-width:900px;text-align:center}
+.kicker{font:700 .68rem/1 Inter,sans-serif;letter-spacing:.21em;text-transform:uppercase;color:var(--accent);margin-bottom:1.6rem}
+h1{font:500 clamp(3rem,8.5vw,6.6rem)/.94 Fraunces,serif;letter-spacing:-.04em;margin:0 0 1.5rem}
+.deck{font:italic 400 clamp(1.14rem,2.4vw,1.5rem)/1.5 Fraunces,serif;color:var(--soft);max-width:690px;margin:0 auto}
+.original-link{display:inline-block;margin-top:2.7rem;font:600 .68rem/1.3 Inter,sans-serif;letter-spacing:.09em;text-transform:uppercase;text-decoration:none;border-bottom:1px solid rgba(95,57,65,.45);padding-bottom:.25rem}
+.depth{padding:6.2rem 1.5rem;border-top:1px solid rgba(95,57,65,.10)}
+.depth-1{background:var(--d1)}
+.depth-2{background:var(--d2)}
+.depth-3{background:var(--d3)}
+.depth-4{background:var(--d4)}
+.depth-5{background:var(--d5)}
+.depth-6{background:var(--d6)}
+.prose{max-width:var(--max);margin:0 auto}
+.depth-label{display:flex;align-items:center;gap:.8rem;margin-bottom:2.1rem;color:var(--accent);font:700 .66rem/1 Inter,sans-serif;letter-spacing:.16em;text-transform:uppercase}
+.depth-label:after{content:"";height:1px;background:rgba(95,57,65,.25);flex:1}
+h2{font:500 clamp(2.05rem,5vw,3.25rem)/1.06 Fraunces,serif;letter-spacing:-.025em;margin:0 0 2rem}
+p{margin:0 0 1.45rem}
+.lede{font-size:1.2rem;line-height:1.64}
+.isolate{font:italic 500 1.23rem/1.58 Fraunces,serif;color:var(--accent);margin:2.2rem 0}
+blockquote{margin:2.3rem 0;padding:0 0 0 1.35rem;border-left:2px solid rgba(95,57,65,.45);font:italic 400 1.18rem/1.56 Fraunces,serif;color:#49343a}
+.key-line{margin:3rem auto;text-align:center;max-width:620px;font:500 clamp(1.65rem,4.3vw,2.6rem)/1.2 Fraunces,serif;color:var(--accent)}
+.small-rule{width:4rem;height:1px;background:rgba(95,57,65,.35);margin:3rem auto}
+.closing-note{font-style:italic;color:#4e4640}
+footer{padding:2.4rem 1.5rem 3rem;background:#cfc1c0;text-align:center;font:600 .64rem/1.6 Inter,sans-serif;text-transform:uppercase;letter-spacing:.09em;color:#6e595d}
+.reveal{opacity:0;transform:translateY(14px);transition:opacity .7s ease,transform .7s ease}.reveal.visible{opacity:1;transform:none}
+@media(max-width:700px){body{font-size:17.5px}.hero{min-height:82vh;padding:7rem 1.15rem 4rem}.depth{padding:4.8rem 1.15rem}.topbar{padding:.55rem .45rem}.lede{font-size:1.12rem}.key-line{font-size:1.7rem}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.reveal{opacity:1;transform:none;transition:none}}
+@media print{.progress,.topbar{display:none}.hero{min-height:auto}.depth{break-inside:auto}.reveal{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+<div class="progress" id="progress"></div>
+<nav class="topbar" aria-label="Site navigation">
+  <a href="../">Essays</a>
+  <a href="../only-the-science/">Only the Science</a>
+</nav>
+
+<header class="hero">
+  <div class="hero-inner reveal">
+    <div class="kicker">Behind the text</div>
+    <h1>Only the Science</h1>
+    <p class="deck">A reading of what the essay appears to say — and what it says underneath.</p>
+    <a class="original-link" href="../only-the-science/">Read the original essay first →</a>
+  </div>
+</header>
+
+<main>
+<section class="depth depth-1">
+  <article class="prose reveal">
+    <div class="depth-label">I · The surface</div>
+    <h2>A portrait of a scientist</h2>
+    <p class="lede">At first glance, <em>Only the Science</em> is an essay about Louis de Broglie.</p>
+    <p>It tells an attractive story. A young man begins not in physics but in history and literature. Through his elder brother and the intellectual aftermath of the first Solvay Conference, he encounters the strange new problems disturbing European physics. Curiosity becomes commitment. He changes fields. War interrupts his studies and puts him at the Eiffel Tower working with radio communications. He returns to physics, makes the extraordinary conjecture that matter might possess a wave nature, and within a few years finds himself transformed from latecomer into Nobel laureate.</p>
+    <p>On this first and most obvious level, the essay belongs to a familiar genre: the portrait of a remarkable scientist.</p>
+    <p>The subject's identity is initially withheld. We therefore meet the historian before the Nobel laureate, uncertainty before inevitability. The point is not merely suspense. It restores contingency to a life that history can make look preordained.</p>
+    <p>The page is designed to serve the same effect. It is quiet, spacious and restrained. Section headings divide the story into movements; optional notes allow a reader to descend into historical or scientific detail without forcing those details into the main narrative. The intention is closer to a magazine essay or an intellectual portrait than to either an academic paper or a conventional science blog.</p>
+    <p>Its first reader matters. The essay was originally written for my sixteen-year-old son.</p>
+    <p>Almost nothing about it, however, announces itself as writing “for teenagers.” There is no reduced vocabulary imposed for effect, no bright pedagogical apparatus, no list of lessons to extract at the end. A young reader is invited into an adult intellectual world rather than given a simplified model of one.</p>
+    <p>That makes him the primary reader, but not the only possible one. The natural wider public is anyone willing to read slowly: older teenagers, students, scientists outside their own speciality, and general readers interested in the history of ideas and the character of thought.</p>
+    <p class="isolate">The ideal reader is someone willing to wonder.</p>
+  </article>
+</section>
+
+<section class="depth depth-2">
+  <article class="prose reveal">
+    <div class="depth-label">II · The first descent</div>
+    <h2>The courage to yield</h2>
+    <p>The first indication that this is not simply a scientific biography comes when the essay reaches de Broglie's greatest achievement.</p>
+    <p>The discovery of matter waves ought to be the climax. It is what made de Broglie famous. It won him the Nobel Prize. A conventional portrait could comfortably end there.</p>
+    <blockquote>“That would already be enough for a remarkable life.<br>It is not, however, the principal reason I admire him.”</blockquote>
+    <p>At that moment the essay changes category.</p>
+    <p>It is no longer principally interested in what de Broglie discovered. It is interested in what he did when he might have been wrong.</p>
+    <p>At the 1927 Solvay Conference, de Broglie defended an interpretation in which particles remained real objects following definite trajectories while being guided by a quantum wave. The proposal encountered serious objections. De Broglie eventually decided that he could not answer them adequately.</p>
+    <p>And so he let the theory go.</p>
+    <p>This is normally the least heroic part of such a story. Our preferred mythology of intellectual greatness has another shape. The solitary genius believes what nobody else believes. The establishment opposes him. He stands firm. Decades later he is vindicated.</p>
+    <p><em>Only the Science</em> deliberately reverses that mythology.</p>
+    <blockquote>“Sometimes courage looks like that.<br>But sometimes courage looks almost exactly opposite.”</blockquote>
+    <p>Its subject is now intellectual courage, but courage of an unusual kind: the courage not to persist.</p>
+    <p>De Broglie had every reason to become identified with his idea. It was his intellectual property in the deepest sense — not merely something he had proposed, but something that could easily have become part of the story he told himself about who he was.</p>
+    <p>Yet when he judged that the argument had gone against him, he moved.</p>
+    <p>The moral centre of the essay begins here. Intellectual seriousness cannot consist merely in believing strongly. It must also include the capacity to stop believing.</p>
+  </article>
+</section>
+
+<section class="depth depth-3">
+  <article class="prose reveal">
+    <div class="depth-label">III · Deeper</div>
+    <h2>Constancy without immobility</h2>
+    <p>Then the story turns again.</p>
+    <p>Twenty-five years later, David Bohm reconstructs a deterministic approach to quantum mechanics. The road de Broglie had abandoned turns out not to have been closed.</p>
+    <p>Here the conventional heroic narrative could reassert itself. De Broglie might now become the prophet vindicated by history. He could announce that he had been right all along.</p>
+    <p>But the essay refuses him that theatrical moment too. He does not immediately embrace Bohm's reconstruction. He looks again. He reconsiders. Gradually, he changes his mind again.</p>
+    <p>The crucial fact is therefore not that de Broglie possessed the correct opinion at one point or another.</p>
+    <p>It is that he changed his mind twice.</p>
+    <div class="key-line">His opinions moved.<br>His character did not.</div>
+    <p>At first this seems paradoxical. We commonly use consistency of opinion as evidence of consistency of character. A person who repeatedly changes position can be accused of weakness, indecision or opportunism.</p>
+    <p>The essay proposes the opposite.</p>
+    <p>There is a deeper kind of constancy in which conclusions may change precisely because the principle governing them does not. If the principle is <em>follow the argument</em>, then faithfulness to that principle may require contradiction between one's younger and older selves.</p>
+    <p>The radical becomes orthodox. The orthodox thinker becomes heterodox again. Seen superficially, de Broglie is inconsistent. Seen at the level the essay asks us to inhabit, he is remarkably consistent.</p>
+    <p>His loyalty is not to a conclusion. It is to the process by which conclusions deserve loyalty.</p>
+    <p>For a sixteen-year-old reader, this may be the essay's most immediately useful proposition. Adolescence is partly the period during which opinions begin to become identities. Aesthetic tastes, intellectual allegiances and judgments about the world acquire unusual emotional force because they participate in the construction of the self.</p>
+    <p>The essay offers its advice indirectly. It does not say: <em>Do not become attached to your opinions.</em> It shows a great scientist becoming attached enough to pursue an idea seriously, but not so attached that revision becomes humiliation.</p>
+    <p>That distinction matters. The essay is not advocating intellectual timidity. The man who proposed matter waves could hardly be accused of excessive caution.</p>
+    <p class="isolate">Audacity in forming beliefs. Humility in revising them.</p>
+  </article>
+</section>
+
+<section class="depth depth-4">
+  <article class="prose reveal">
+    <div class="depth-label">IV · The wider pattern</div>
+    <h2>Crossing the boxes</h2>
+    <p>The essay repeatedly returns to people who cross borders.</p>
+    <p>De Broglie passes from history and literature into physics. War throws the theoretician into radio technology. Pauli's intellectual world reaches toward Jung. Bohr adopts a philosophical symbol of complementarity. Bohm moves between physics and broader philosophical questions.</p>
+    <p>The point is not that quantum mechanics was produced by mysticism, nor that wandering between disciplines automatically creates discovery. The text is interested in something more modest and more useful: a quality of mind.</p>
+    <p>These figures did not treat the administrative divisions of knowledge as walls surrounding reality itself.</p>
+    <p>A university may have a physics department and a philosophy department. Reality has no corresponding obligation to divide itself that way.</p>
+    <p>The essay therefore becomes, at this level, a defence of intellectual trespass.</p>
+    <p>Curiosity is allowed to become serious wherever it leads.</p>
+    <p>This connects back to the young de Broglie. His original act of intellectual courage precedes matter waves. It is the moment when curiosity ceases to be recreational:</p>
+    <blockquote>“He did something else.<br>He entered it.”</blockquote>
+    <p>The sentence describes a change of academic discipline, but also a disposition toward life. To encounter something genuinely interesting is not merely to admire it from a distance. One may cross over.</p>
+    <p>For the intended young reader, the implication again arrives without instruction. At sixteen, categories can already begin to harden: science person, humanities person, mathematical person, artistic person.</p>
+    <p><em>Only the Science</em> quietly distrusts those boxes.</p>
+    <p>Its subject began as a historian.</p>
+    <p>The history of physics is different because he did not remain one.</p>
+  </article>
+</section>
+
+<section class="depth depth-5">
+  <article class="prose reveal">
+    <div class="depth-label">V · Beneath the method</div>
+    <h2>What may be thought before it can be proved?</h2>
+    <p>Yet even this is not the deepest argument in the essay.</p>
+    <p>That argument is announced almost at the beginning, so openly that it can easily be overlooked.</p>
+    <blockquote>“What follows is speculation.”</blockquote>
+    <p>The sentence initially looks like a disclaimer.</p>
+    <p>It is more than that.</p>
+    <p>The essay defines its speculation carefully. Not fantasy. Not the invention of facts. Rather, a form of commitment made while the evidence remains incomplete:</p>
+    <blockquote>“One does not know. But one has seen enough to take a position.”</blockquote>
+    <p>Here the epistemological problem underneath the biography becomes visible.</p>
+    <p>How are we permitted to think when certainty is unavailable?</p>
+    <p>One possibility is to refuse to go beyond what can be demonstrated. Facts remain facts; anything beyond them is dismissed as subjective interpretation. The opposite possibility is to treat speculation as licence — to invent whatever story is psychologically satisfying and call it insight.</p>
+    <p><em>Only the Science</em> rejects both.</p>
+    <p>Between certainty and fantasy lies judgment.</p>
+    <p>A pattern can be insufficient to establish a fact yet strong enough to make interpretation worthwhile.</p>
+    <p>This is what the essay itself is doing with de Broglie. Historical documents can establish that he studied history, entered physics, proposed matter waves, defended a pilot-wave theory, abandoned it, taught another interpretation and later returned to causal ideas.</p>
+    <p>No archive can establish with comparable certainty exactly what those events reveal about his character.</p>
+    <p>I cannot know what de Broglie experienced inwardly. The text says so at the outset. What I can do is identify a pattern in the surviving facts and ask whether that pattern is illuminating.</p>
+    <p>To move from chronology to character requires interpretation.</p>
+    <p>It requires speculation.</p>
+    <p>The essay therefore performs the intellectual behaviour it advocates. It takes evidence seriously. It distinguishes what is known from what is inferred. But then it refuses the false modesty of saying that because complete certainty is impossible, nothing meaningful may be said.</p>
+    <p>It risks a portrait.</p>
+    <p>And this is where Louis de Broglie becomes almost perfectly suited to the method of the essay.</p>
+    <p>His great scientific act was itself speculative. Light had revealed both wave-like and particle-like properties. De Broglie asked whether the symmetry might run in the other direction: if something regarded as a wave could behave like a particle, might something regarded as a particle behave like a wave?</p>
+    <p>The decisive intellectual move preceded its later experimental confirmation.</p>
+    <p>First came the imaginative leap.</p>
+    <p>So an essay about the value of speculation proceeds by speculating about the character of a scientist whose greatness began with an act of speculation.</p>
+    <p>The form and subject mirror one another.</p>
+    <div class="small-rule"></div>
+    <p>And now de Broglie's later willingness to abandon his own theory acquires another significance.</p>
+    <p>The virtue of speculation depends upon the virtue of revision.</p>
+    <p class="key-line">Speculation without revisability becomes dogma.<br>Revisability without speculation becomes sterility.</p>
+    <p>To think well requires both freedoms: the freedom to go beyond what is already known, and the freedom to return when the road proves wrong.</p>
+    <p>This may be the essay's deepest educational proposition. A young person is not merely being told to keep an open mind. He is being offered a model of intellectual life in which one may think boldly without pretending certainty, commit without becoming imprisoned by commitment, and abandon an idea without treating abandonment as defeat.</p>
+    <blockquote>“One commits. But one remains movable.”</blockquote>
+  </article>
+</section>
+
+<section class="depth depth-6">
+  <article class="prose reveal">
+    <div class="depth-label">VI · The title underneath the title</div>
+    <h2>Only the Science</h2>
+    <p>Only after all of this does the title fully disclose itself.</p>
+    <p>Near the end, de Broglie gives a severe instruction concerning a proposed account of his life:</p>
+    <div class="key-line"><em>Seule, la Science.</em></div>
+    <p>Only the science.</p>
+    <p>At first, the phrase appears to demand the opposite of everything the essay has done. Leave out the personality. Leave out the anecdotes. Leave out the speculative portrait. Attend to the work.</p>
+    <p>But <em>Only the Science</em> ends by showing why the command cannot quite succeed.</p>
+    <p>The desire to remove the man reveals the man.</p>
+    <p>His insistence that attention belong to the discovery rather than its discoverer becomes evidence about his relationship to knowledge. The statement meant to erase personality becomes one of the most revealing expressions of personality in the essay.</p>
+    <p>And so the title turns back upon itself.</p>
+    <p>“Only the science” can mean: <em>ignore the human being.</em></p>
+    <p>But after reading the essay it can also mean something more demanding:</p>
+    <p class="key-line">Put the truth before your ownership of it.</p>
+    <p>The science matters more than the scientist because reality does not care whose theory it was.</p>
+    <p>The argument matters more than victory.</p>
+    <p>Truth matters more than possession.</p>
+    <p>At this final layer, the apparent biography of Louis de Broglie has become an essay about a possible ethics of thought.</p>
+    <p>Curiosity should be strong enough to cross boundaries. Imagination should be free enough to speculate. Ambition should be large enough to attempt difficult things. Conviction should be strong enough to sustain serious work. Evidence should be powerful enough to overturn conviction. And the self should remain sufficiently separate from its ideas that changing one's mind remains possible.</p>
+    <p>Seen this way, the fact that <em>Only the Science</em> was written for one sixteen-year-old reader is not incidental.</p>
+    <p>A parent could state all these principles directly. Be curious. Think for yourself. Do not be afraid to be wrong. Do not let pride prevent you from changing your mind. Read outside your field. Follow evidence. Keep your imagination.</p>
+    <p>Such advice is easy to give and easy to forget.</p>
+    <p>Instead, the essay entrusts those ideas to a story.</p>
+    <p>It does not tell its intended reader what kind of person to become. It introduces him to a man, selects certain moments from that man's life, admits openly that the selection has become interpretation, and leaves him to decide whether the pattern is worth admiring.</p>
+    <p>That is also why the essay can travel beyond the son for whom it was written. Its natural public includes anyone still deciding what sort of thinker he or she wishes to become — which may mean sixteen-year-olds most obviously, but does not end with them.</p>
+    <div class="small-rule"></div>
+    <p>The essay begins with a scientist.</p>
+    <p>Then it becomes a portrait of intellectual character.</p>
+    <p>Then a defence of changing one's mind.</p>
+    <p>Then a defence of crossing intellectual boundaries.</p>
+    <p>Then, deeper still, a defence of the right to perceive a pattern before one can prove it — provided one possesses the discipline to distinguish conjecture from fact and the humility to revise it.</p>
+    <p>Finally it arrives at something almost ethical.</p>
+    <p class="isolate">Ideas are meant to be loved enough to pursue.<br>But not enough to possess us.</p>
+    <p>The deepest consistency is therefore not never changing one's mind.</p>
+    <p>It is remaining faithful to the conditions under which a mind ought to change.</p>
+    <p class="closing-note">And perhaps that is the final meaning of <em>Only the Science</em>: not the removal of the human being from intellectual life, but the cultivation of a human being capable of putting truth ahead of himself.</p>
+  </article>
+</section>
+</main>
+
+<footer>
+  <a href="../only-the-science/">Only the Science</a> · <a href="../">Essays</a>
+</footer>
+
+<script>
+const progress=document.getElementById('progress');
+const updateProgress=()=>{const h=document.documentElement;const span=h.scrollHeight-h.clientHeight;progress.style.width=(span?Math.min(100,(h.scrollTop/span)*100):0)+'%'};
+addEventListener('scroll',updateProgress,{passive:true});updateProgress();
+const observer=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')}),{threshold:.08});
+document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+</script>
+</body>
+</html>
