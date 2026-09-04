@@ -1,0 +1,49 @@
+name: Clean essay note presentation
+
+on:
+  push:
+    paths:
+      - '.github/workflows/cleanup-notes.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Remove inline note cards and expose double-slit from Note E
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          path = Path('only-the-science/index.html')
+          s = path.read_text(encoding='utf-8')
+
+          cards = '''<div class="feature-grid reveal">
+          <div class="feature"><div><div class="letter">Reader’s Note H</div><h3>Schrödinger’s cat</h3><p>A cat, a sealed box and a thought experiment designed to make the strangeness of quantum superposition impossible to ignore.</p></div><button data-note="H">Open note H</button></div>
+          <div class="feature"><div><div class="letter">Reader’s Note I</div><h3>Pauli × Jung</h3><p>A Nobel-level physicist and a founder of depth psychology correspond about symmetry, observation and the border between psyche and physics.</p></div><button data-note="I">Open note I</button></div>
+          <div class="feature"><div><div class="letter">Reader’s Note J</div><img class="bohr-crest" src="https://upload.wikimedia.org/wikipedia/commons/d/da/Coat_of_Arms_of_Niels_Bohr.svg" alt="Reconstruction of Niels Bohr's coat of arms showing a yin-yang symbol"><h3>Bohr’s coat of arms</h3><p><em>Contraria sunt complementa</em>: opposites are complementary.</p></div><button data-note="J">Open note J</button></div>
+          </div>
+          '''
+          if cards not in s:
+              raise SystemExit('Inline H/I/J note card block not found')
+          s = s.replace(cards, '', 1)
+
+          old_e = '''E:{title:'Matter waves, without the mathematics',body:`<p>A particle is easy to imagine as a thing: a grain of sand, a billiard ball, an electron. A wave seems categorically different: it spreads, interferes and can pass through several possible routes before producing a pattern.</p><p>The radical move was to propose that matter itself has a wave aspect. For a particle moving with momentum <em>p</em>, the associated wavelength is written λ = h/p. You do not need the equation to grasp the leap: properties previously assigned to light were being extended to material particles.</p><p>Experiments showing electron diffraction later gave striking support to the idea, and Schrödinger’s wave mechanics developed the wave description into one of the central mathematical formulations of quantum theory.</p><p class="doc">Documentation: sources 3 and 5.</p>`},'''
+          new_e = '''E:{title:'Matter waves, without the mathematics',body:`<p>A particle is easy to imagine as a thing: a grain of sand, a billiard ball, an electron. A wave seems categorically different: it spreads, interferes and can pass through several possible routes before producing a pattern.</p><p>The radical move was to propose that matter itself has a wave aspect. For a particle moving with momentum <em>p</em>, the associated wavelength is written λ = h/p. You do not need the equation to grasp the leap: properties previously assigned to light were being extended to material particles.</p><p>Experiments showing electron diffraction later gave striking support to the idea, and Schrödinger’s wave mechanics developed the wave description into one of the central mathematical formulations of quantum theory.</p><div class="go"><strong>Visual explainer</strong><p><a href="./double-slit/">See the double-slit experiment: classical particles, waves, and quantum interference.</a></p></div><p class="doc">Documentation: sources 3 and 5.</p>`},'''
+          if old_e not in s:
+              raise SystemExit('Reader Note E block not found')
+          s = s.replace(old_e, new_e, 1)
+
+          path.write_text(s, encoding='utf-8')
+          PY
+
+      - name: Commit changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add only-the-science/index.html
+          git commit -m "Keep essay body clean and link double-slit from note E"
+          git push
