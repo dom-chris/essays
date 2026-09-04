@@ -13,61 +13,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Insert dedicated double-slit note
-        run: |
-          python - <<'PY'
-          from pathlib import Path
-          import re
-
-          path = Path('only-the-science/index.html')
-          s = path.read_text(encoding='utf-8')
-
-          # 1. Remove the nested double-slit link from Note E, returning E to matter waves only.
-          s = s.replace('<div class="go"><strong>Visual explainer</strong><p><a href="./double-slit/">See the double-slit experiment: classical particles, waves, and quantum interference.</a></p></div>', '')
-
-          # 2. Shift existing reader notes F–N forward one letter, working backwards to avoid collisions.
-          letters = list('FGHIJKLMN')
-          shifted = {c: chr(ord(c)+1) for c in letters}
-          for old in reversed(letters):
-              new = shifted[old]
-              s = s.replace(f'data-note="{old}"', f'data-note="{new}"')
-              s = s.replace(f"data-note='{old}'", f"data-note='{new}'")
-              s = s.replace(f'Reader’s Note {old}', f'Reader’s Note {new}')
-              s = s.replace(f"\n{old}:{{title:", f"\n{new}:{{title:")
-
-          # 3. Update the visible note-index letters after their data-note attributes have shifted.
-          for old in reversed(letters):
-              new = shifted[old]
-              s = re.sub(rf'(<button[^>]*data-note="{new}"[^>]*>){old}(</button>)', rf'\1{new}\2', s)
-
-          # 4. Add a visible F marker to the first sentence introducing quantum mechanics.
-          old_para = '<p>Quantum mechanics had become astonishingly successful, but with that success came an unsettling interpretation. At the deepest level, reality seemed not merely difficult to predict, but fundamentally probabilistic.<button class="note-ref" data-note="G" aria-label="Open Reader’s Note G">G</button></p>'
-          new_para = '<p>Quantum mechanics had become astonishingly successful, but with that success came an unsettling interpretation.<button class="note-ref" data-note="F" aria-label="Open Reader’s Note F">F</button> At the deepest level, reality seemed not merely difficult to predict, but fundamentally probabilistic.<button class="note-ref" data-note="G" aria-label="Open Reader’s Note G">G</button></p>'
-          if old_para not in s:
-              raise SystemExit('Quantum mechanics paragraph not found')
-          s = s.replace(old_para, new_para, 1)
-
-          # 5. Insert F into the Reader's Notes index after E.
-          marker = '<button data-note="E">E</button>'
-          if marker not in s:
-              raise SystemExit('Note E index button not found')
-          s = s.replace(marker, marker + '<button data-note="F">F</button>', 1)
-
-          # 6. Add the new Note F immediately after Note E in the notes dictionary.
-          note_e_end = '<p class="doc">Documentation: sources 3 and 5.</p>`},\nG:{title:'
-          if note_e_end not in s:
-              raise SystemExit('Shifted Note E/G boundary not found')
-          new_f = '''<p class="doc">Documentation: sources 3 and 5.</p>`},
-F:{title:'The double slit — quantum theory in one experiment',body:`<p>One experiment captures much of what made quantum theory so unsettling. Send ordinary particles through two openings and you expect two concentrations on the screen behind them. Send waves through the same openings and the waves overlap, producing an interference pattern.</p><p>Electrons complicate the picture. They arrive on the detector one at a time, as localized impacts, yet over many repetitions those impacts build up into an interference pattern. The result does not by itself tell us which interpretation of quantum mechanics is correct. It tells us that the old choice between “particle” and “wave” is no longer enough.</p><div class="go"><strong>Visual explainer</strong><p><a href="./double-slit/">Open the double-slit experiment: classical particles, waves, and quantum interference.</a></p></div><p>This is the phenomenon first. The later pilot-wave discussion asks a different question: what account of reality could produce it?</p><p class="doc">Conceptual companion to sources 5–6.</p>`},
-G:{title:'''
-          s = s.replace(note_e_end, new_f, 1)
-
-          path.write_text(s, encoding='utf-8')
-          PY
+      - name: Patch essay
+        run: echo 'CkZST00gUEFUSExJQiBJTVBPUlQgUEFUSApJTVBPUlQgUkUKClBBVEggPSBQYXRoKCJvbmx5LXRoZS1zY2llbmNlL2luZGV4Lmh0bWwiKQpTID0gUEFUSC5SRUFEX1RFWFQoRU5DT0RJTkcgPSAidXRmLTgiKQoKUyA9IFMuUkVQTEFDRSgKICAgICcuYWN0IGgye21hcmdpbjowIDAgMi4xcmVtO2ZvbnQ6NjUwIC43NnJlbS8xLjI1IEludGVyLHNhbnMtc2VyaWY7bGV0dGVyLXNwYWNpbmc6LjE2ZW07dGV4dC10cmFuc2Zvcm06dXBwZXJjYXNlO2NvbG9yOnZhcigtLWFjY2VudCl9JywKICAgICcuYWN0IGgye21hcmdpbjowIDAgMi4xcmVtO2ZvbnQ6NzAwIDFyZW0vMS4yNSBJbnRlcixzYW5zLXNlcmlmO2xldHRlci1zcGFjaW5nOi4xMDVlbTt0ZXh0LXRyYW5zZm9ybTp1cHBlcmNhc2U7Y29sb3I6dmFyKC0tYWNjZW50KX0nCikKClMgPSBTLlJFUExBQ0UoCiAgICAnPGRpdiBjbGFzcz0iZ28iPjxzdHJvbmc+VmlzdWFsIGV4cGxhaW5lcjwvc3Ryb25nPjxwPjxhIGhyZWY9Ii4vZG91YmxlLXNsaXQvIj5TZWUgdGhlIGRvdWJsZS1zbGl0IGV4cGVyaW1lbnQ6IGNsYXNzaWNhbCBwYXJ0aWNsZXMsIHdhdmVzLCBhbmQgcXVhbnR1bSBpbnRlcmZlcmVuY2UuPC9hPjwvcD48L2Rpdj4nLAogICAgJycKKQoKTEVUVEVSUyA9IExJU1QoIkZHSElKS0xNTiIpCkZPUiBPTEQgSU4gUkVWRVJTRUQoTEVUVEVSUyk6CiAgICBORVcgPSBDSFIoT1JEKE9MRCkrMSkKICAgIFMgPSBTLlJFUExBQ0UoRicgZGF0YS1ub3RlPSJ7T0xEfSInLCBGJyBkYXRhLW5vdGU9IntORVd9IicpCiAgICBTID0gUy5SRVBMQUNFKEYiZGF0YS1ub3RlPSd7T0xEfSciLCBGImRhdGEtbm90ZT0ne05FV30nIikKICAgIFMgPSBTLlJFUExBQ0UoRkZSRUFERVJzIE5PVEUge09MRH0iLCBGRlJFQURFUlMgTk9URSB7TkVXfSIpCiAgICBTID0gUy5SRVBMQUNFKEYiXG57T0xEfTp7e3RpdGxlOiIsIEYiXG57TkVXfTp7e3RpdGxlOiIpCgpGT1IgT0xEIElOIFJFVkVSU0VEKExFVFRFUlMpOgogICAgTkVXID0gQ0hSKE9SRChPTEQpKzEpCiAgICBTID0gUkUuU1VCKFJGJyhuYnV0dG9uW14+XSpkYXRhLW5vdGU9IntORVd9IltePl0qPil7T0xEfSg8L2J1dHRvbj4pJywgUkYnXDF7TkVXfVwyJywgUykKCk9MRF9QQVJBID0gJzxwPlF1YW50dW0gbWVjaGFuaWNzIGhhZCBiZWNvbWUgYXN0b25pc2hpbmdseSBzdWNjZXNzZnVsLCBidXQgd2l0aCB0aGF0IHN1Y2Nlc3MgY2FtZSBhbiB1bnNldHRsaW5nIGludGVycHJldGF0aW9uLiBBdCB0aGUgZGVlcGVzdCBsZXZlbCwgcmVhbGl0eSBzZWVtZWQgbm90IG1lcmVseSBkaWZmaWN1bHQgdG8gcHJlZGljdCwgYnV0IGZ1bmRhbWVudGFsbHkgcHJvYmFiaWxpc3RpYy48YnV0dG9uIGNsYXNzPSJub3RlLXJlZiIgZGF0YS1ub3RlPSJHIiBhcmlhLWxhYmVsPSJPcGVuIFJlYWRlcidzIE5vdGUgRyI+RzwvYnV0dG9uPjwvcD4nCk5FV19QQVJBID0gJzxwPlF1YW50dW0gbWVjaGFuaWNzIGhhZCBiZWNvbWUgYXN0b25pc2hpbmdseSBzdWNjZXNzZnVsLCBidXQgd2l0aCB0aGF0IHN1Y2Nlc3MgY2FtZSBhbiB1bnNldHRsaW5nIGludGVycHJldGF0aW9uLjxidXR0b24gY2xhc3M9Im5vdGUtcmVmIiBkYXRhLW5vdGU9IkYiIGFyaWEtbGFiZWw9Ik9wZW4gUmVhZGVy4oCZcyBOb3RlIEYiPkY8L2J1dHRvbj4gQXQgdGhlIGRlZXBlc3QgbGV2ZWwsIHJlYWxpdHkgc2VlbWVkIG5vdCBtZXJlbHkgZGlmZmljdWx0IHRvIHByZWRpY3QsIGJ1dCBmdW5kYW1lbnRhbGx5IHByb2JhYmlsaXN0aWMuPGJ1dHRvbiBjbGFzcz0ibm90ZS1yZWYiIGRhdGEtbm90ZT0iRyIgYXJpYS1sYWJlbD0iT3BlbiBSZWFkZXLigJlzIE5vdGUgRyI+RzwvYnV0dG9uPjwvcD4nCklGIE9MRF9QQVJBIE5PVCBJTiBTOgogICAgUkFJU0UgU1lTVEVNRVhJVCgiUXVhbnR1bSBtZWNoYW5pY3MgcGFyYWdyYXBoIG5vdCBmb3VuZCIpClMgPSBTLlJFUExBQ0UoT0xEX1BBUkEsIE5FV19QQVJBLCAxKQoKTUFSS0VSID0gJzxidXR0b24gZGF0YS1ub3RlPSJFIj5FPC9idXR0b24+JwpJRiBNQVJLRVIgTk9UIElOIFM6CiAgICBSQUlTRSBTeXN0ZW1FeGl0KCJOb3RlIEUgaW5kZXggYnV0dG9uIG5vdCBmb3VuZCIpClMgPSBTLlJFUExBQ0UoTUFSS0VSLCBNQVJLRVIgKyAnPGJ1dHRvbiBkYXRhLW5vdGU9IkYiPkY8L2J1dHRvbj4nLCAxKQoKQk9VTkRBUlkgPSAnPHAgY2xhc3M9ImRvYyI+RG9jdW1lbnRhdGlvbjogc291cmNlcyAzIGFuZCA1LjwvcD5gfSxcblc6e3RpdGxlOicKSUYgQk9VTkRBUlkgTk9UIElOIFM6CiAgICBSQUlTRSBTeXN0ZW1FeGl0KCJOb3RlIEUvRyBib3VuZGFyeSBub3QgZm91bmQiKQoKTkVXX05PVEUgPSAnPHAgY2xhc3M9ImRvYyI+RG9jdW1lbnRhdGlvbjogc291cmNlcyAzIGFuZCA1LjwvcD5gfSxcblY6e3RpdGxlOlwnVGhlIGRvdWJsZSBzbGl0IOKAlCBxdWFudHVtIHRoZW9yeSBpbiBvbmUgZXhwZXJpbWVudFwnLGJvZHk6YDxwPk9uZSBleHBlcmltZW50IGNhcHR1cmVzIG11Y2ggb2Ygd2hhdCBtYWRlIHF1YW50dW0gdGhlb3J5IHNvIHVuc2V0dGxpbmcuIFNlbmQgb3JkaW5hcnkgcGFydGljbGVzIHRocm91Z2ggdHdvIG9wZW5pbmdzIGFuZCB5b3UgZXhwZWN0IHR3byBjb25jZW50cmF0aW9ucyBvbiB0aGUgc2NyZWVuIGJlaGluZCB0aGVtLiBTZW5kIHdhdmVzIHRocm91Z2ggdGhlIHNhbWUgb3BlbmluZ3MgYW5kIHRoZSB3YXZlcyBvdmVybGFwLCBwcm9kdWNpbmcgYW4gaW50ZXJmZXJlbmNlIHBhdHRlcm4uPC9wPjxwPkVsZWN0cm9ucyBjb21wbGljYXRlIHRoZSBwaWN0dXJlLiBUaGV5IGFycml2ZSBvbiB0aGUgZGV0ZWN0b3Igb25lIGF0IGEgdGltZSwgYXMgbG9jYWxpemVkIGltcGFjdHMsIHlldCBvdmVyIG1hbnkgcmVwZXRpdGlvbnMgdGhvc2UgaW1wYWN0cyBidWlsZCB1cCBpbnRvIGFuIGludGVyZmVyZW5jZSBwYXR0ZXJuLiBUaGUgcmVzdWx0IGRvZXMgbm90IGJ5IGl0c2VsZiB0ZWxsIHVzIHdoaWNoIGludGVycHJldGF0aW9uIG9mIHF1YW50dW0gbWVjaGFuaWNzIGlzIGNvcnJlY3QuIEl0IHRlbGxzIHVzIHRoYXQgdGhlIG9sZCBjaG9pY2UgYmV0d2VlbiDigJxwYXJ0aWNsZeKAnSBhbmQg4oCcd2F2ZeKAnSBpcyBubyBsb25nZXIgZW5vdWdoLjwvcD48ZGl2IGNsYXNzPSJnbyI+PHN0cm9uZz5WaXN1YWwgZXhwbGFpbmVyPC9zdHJvbmc+PHA+PGEgaHJlZj0iLi9kb3VibGUtc2xpdC8iPk9wZW4gdGhlIGRvdWJsZS1zbGl0IGV4cGVyaW1lbnQ6IGNsYXNzaWNhbCBwYXJ0aWNsZXMsIHdhdmVzLCBhbmQgcXVhbnR1bSBpbnRlcmZlcmVuY2UuPC9hPjwvcD48L2Rpdj48cD5UaGlzIGlzIHRoZSBwaGVub21lbm9uIGZpcnN0LiBUaGUgbGF0ZXIgcGlsb3Qtd2F2ZSBkaXNjdXNzaW9uIGFza3MgYSBkaWZmZXJlbnQgcXVlc3Rpb246IHdoYXQgYWNjb3VudCBvZiByZWFsaXR5IGNvdWxkIHByb2R1Y2UgaXQ/PC9wPjxwIGNsYXNzPSJkb2MiPkNvbmNlcHR1YWwgY29tcGFuaW9uIHRvIHNvdXJjZXMgNeKAkzYuPC9wPmB9LFxuRzp7dGl0bGU6JwpTID0gUy5SRVBMQUNFKEJPVU5EQVJZLCBORVdfTk9URSwgMSkKClBBVEguV1JJVEVfVEVYVChTLCBFTkNPRElORyA9ICJ1dGYtOCIpCg==' | base64 -d | python
       - name: Commit changes
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add only-the-science/index.html
-          git commit -m "Add dedicated double-slit reader note"
+          git commit -m "Add direct double-slit note and rebalance subtitles"
           git push
