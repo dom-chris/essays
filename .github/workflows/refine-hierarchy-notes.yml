@@ -1,0 +1,143 @@
+name: Refine essay hierarchy and note chronology
+
+on:
+  push:
+    paths:
+      - '.github/workflows/refine-hierarchy-notes.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Refine typography and reader-note chronology
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          path = Path('only-the-science/index.html')
+          s = path.read_text(encoding='utf-8')
+
+          def replace_once(old, new, label):
+              global s
+              if old not in s:
+                  raise SystemExit(f'Not found: {label}')
+              s = s.replace(old, new, 1)
+
+          # Typography: section headings outrank all ordinary emphasized prose.
+          replace_once(
+              '.act h2{margin:0 0 2.1rem;font:700 1rem/1.25 Inter,sans-serif;letter-spacing:.105em;text-transform:uppercase;color:var(--accent)}',
+              '.act h2{margin:0 0 2.1rem;font:700 1.22rem/1.2 Inter,sans-serif;letter-spacing:.075em;text-transform:uppercase;color:var(--accent)}',
+              'act h2 style')
+          replace_once(
+              '.act .beat{font-family:Fraunces,serif;font-size:1.18rem;line-height:1.5;font-style:italic;color:var(--soft);margin:2rem 0}',
+              '.act .beat{font-family:Fraunces,serif;font-size:1.04rem;line-height:1.55;font-style:italic;color:var(--soft);margin:1.9rem 0}',
+              'beat style')
+          replace_once(
+              '.act .isolate{font-family:Fraunces,serif;font-size:clamp(1.45rem,4vw,2.15rem);line-height:1.4;margin:2.6rem 0;color:var(--accent2)}',
+              '.act .isolate{font-family:Fraunces,serif;font-size:1.06rem;line-height:1.55;margin:2rem 0;color:var(--accent2)}',
+              'isolate style')
+          replace_once(
+              '.visual-card h3{font:500 1.65rem/1.15 Fraunces,serif;margin:0 0 .75rem}',
+              '.visual-card h3{font:600 1.1rem/1.3 Fraunces,serif;margin:0 0 .75rem}',
+              'visual card heading style')
+          replace_once(
+              '.dice{max-width:620px;margin:3rem auto;border-left:3px solid var(--accent);padding:1.2rem 1.5rem;font-family:Fraunces,serif;font-size:1.25rem;font-style:italic;line-height:1.5;background:rgba(255,255,255,.38)}',
+              '.dice{max-width:620px;margin:2.2rem auto;border-left:3px solid var(--accent);padding:1rem 1.25rem;font-family:Fraunces,serif;font-size:1.02rem;font-style:italic;line-height:1.55;background:rgba(255,255,255,.38)}',
+              'dice style')
+          replace_once('.act .isolate{font-size:1.55rem}', '.act .isolate{font-size:1.04rem}', 'mobile isolate style')
+
+          # Note B belongs after the essay has named the classical/quantum tension.
+          replace_once(
+              '<p>At the beginning of the twentieth century, physics was coming apart.<button class="note-ref" data-note="B" aria-label="Open reader\'s note B">B</button></p>',
+              '<p>At the beginning of the twentieth century, physics was coming apart.</p>',
+              'early B marker')
+          replace_once(
+              '<p>Planck had introduced the quantum. Einstein had made light behave like particles. Lorentz, Poincaré, Marie Curie and the other giants of European physics were trying to understand what exactly they had unleashed.</p>',
+              '<p>Planck had introduced the quantum. Einstein had made light behave like particles. Lorentz, Poincaré, Marie Curie and the other giants of European physics were trying to understand what exactly they had unleashed.<button class="note-ref" data-note="B" aria-label="Open reader\'s note B">B</button></p>',
+              'later B marker')
+
+          # Matter-wave explanation comes only after the essay has introduced confirmation and Schrödinger.
+          replace_once(
+              '<p>It was an audacious thought, and he developed it in his doctoral thesis.<button class="note-ref" data-note="E" aria-label="Open reader\'s note E">E</button></p>',
+              '<p>It was an audacious thought, and he developed it in his doctoral thesis.</p>',
+              'early E marker')
+          replace_once(
+              '<p>Soon electron diffraction would confirm the wave behaviour of matter, while Schrödinger would build upon the idea in developing wave mechanics.</p>',
+              '<p>Soon electron diffraction would confirm the wave behaviour of matter, while Schrödinger would build upon the idea in developing wave mechanics.<button class="note-ref" data-note="E" aria-label="Open reader\'s note E">E</button></p>',
+              'later E marker')
+
+          # Pilot-wave historical note comes only after the scene of proposal, challenge and abandonment is complete.
+          replace_once(
+              '<p>In 1911 he had encountered the great problems of physics from the margins; in 1927 he was looked upon as one of the men expected to solve them.<button class="note-ref" data-note="H" aria-label="Open reader\'s note H">H</button></p>',
+              '<p>In 1911 he had encountered the great problems of physics from the margins; in 1927 he was looked upon as one of the men expected to solve them.</p>',
+              'early H Solvay marker')
+          replace_once(
+              '<p>He proposed instead that the particle remained real, that it had a position and followed a trajectory, while the quantum wave guided it. What appeared to us as randomness might therefore conceal an underlying order.<button class="note-ref" data-note="H" aria-label="Open reader\'s note H">H</button></p>',
+              '<p>He proposed instead that the particle remained real, that it had a position and followed a trajectory, while the quantum wave guided it. What appeared to us as randomness might therefore conceal an underlying order.</p>',
+              'early H pilot-wave marker')
+
+          # Probability note appears once; the Einstein pull-quote no longer carries a duplicate marker.
+          replace_once(
+              '<div class="dice">“God does not play dice” became the famous shorthand for Einstein’s resistance to the idea that probability was the final layer of reality. <button class="note-ref" data-note="G" aria-label="Open reader\'s note G">G</button></div>',
+              '<div class="dice">“God does not play dice” became the famous shorthand for Einstein’s resistance to the idea that probability was the final layer of reality.</div>',
+              'duplicate G marker')
+
+          # Bohm note waits until de Broglie has actually reconsidered and returned.
+          replace_once(
+              '<p>And in 1952, Bohm returned to the road de Broglie had abandoned.<button class="note-ref" data-note="N" aria-label="Open reader\'s note N">N</button></p>',
+              '<p>And in 1952, Bohm returned to the road de Broglie had abandoned.</p>',
+              'early N marker')
+
+          # The quotation itself must appear before its documentary note.
+          replace_once(
+              '<p>He once gave a wonderfully severe instruction to a man who wanted to write about him.<button class="note-ref" data-note="O" aria-label="Open reader\'s note O">O</button></p>',
+              '<p>He once gave a wonderfully severe instruction to a man who wanted to write about him.</p>',
+              'early O marker')
+          replace_once(
+              '<p>Only the science.</p>',
+              '<p>Only the science.<button class="note-ref" data-note="O" aria-label="Open reader\'s note O">O</button></p>',
+              'later O marker')
+
+          def replace_note(letter, next_letter, entry):
+              global s
+              start_token = f"{letter}:{{title:"
+              end_token = f"\n{next_letter}:{{title:"
+              start = s.index(start_token)
+              end = s.index(end_token, start)
+              s = s[:start] + entry + ',' + s[end:]
+
+          replace_note('A', 'B', """A:{title:'The Solvay Conferences',body:`<p>The Solvay Conferences were small, invitation-only meetings created to put leading scientists in the same room around problems that ordinary conferences were not resolving. The first physics meeting, in Brussels in 1911, focused on radiation and the emerging quantum problem; Planck, Einstein, Lorentz, Poincaré, Rutherford and Marie Curie were among the participants.</p><p>Maurice was one of the scientific secretaries, helping record the discussions and prepare the proceedings. That is the practical meaning of being “close to the proceedings” here.</p><p class="doc">Documentation: sources 1–2.</p>`}""")
+
+          replace_note('B', 'C', """B:{title:'What was “coming apart”?',body:`<p>Classical physics had given an extraordinarily successful picture of objects moving continuously under definite laws. Around 1900, however, several results stopped fitting comfortably inside that picture.</p><p>Planck’s quanta made energy exchange discrete. Einstein’s light quanta gave light particle-like behaviour. So “coming apart” does not mean physics had stopped working; it means the old conceptual categories were no longer sufficient for everything the experiments were showing.</p><p class="doc">Documentation: sources 2, 5 and 6.</p>`}""")
+
+          replace_note('C', 'D', """C:{title:'A late arrival, but not a naïve one',body:`<p>Calling him a latecomer should not suggest an isolated amateur suddenly wandering into advanced physics. His elder brother was an accomplished experimental physicist, and he had unusual access to laboratory culture and current scientific discussion.</p><p>The striking point is therefore not that he began from nowhere, but the speed and seriousness with which someone trained first in the humanities crossed into foundational theoretical physics.</p><p class="doc">Documentation: sources 1 and 3.</p>`}""")
+
+          replace_note('D', 'E', """D:{title:'The Eiffel Tower was a radio station',body:`<p>The Tower was not merely a monument. Its height made it strategically useful for early wireless telegraphy, and during the First World War it became part of France’s military communications and interception infrastructure.</p><p>To intercept German communications meant receiving enemy radio traffic so that it could be passed on for decipherment. The assignment was therefore practical technical work inside an important wartime communications system.</p><p class="doc">Documentation: sources 3–4.</p>`}""")
+
+          replace_note('E', 'F', """E:{title:'Matter waves, without the mathematics',body:`<p>A particle is easy to imagine as a localized thing. A wave is different: it spreads, diffracts and interferes. De Broglie’s radical move was to associate a wavelength with matter itself.</p><p>For a particle with momentum <em>p</em>, that wavelength is written λ = h/p. You do not need the equation to grasp the claim: a material particle could display behaviour previously associated with waves.</p><p>Electron diffraction was powerful evidence because diffraction is characteristically wave-like; Schrödinger then developed the wave description into a central mathematical formulation of quantum mechanics.</p><p class="doc">Documentation: sources 3 and 5.</p>`}""")
+
+          replace_note('F', 'G', """F:{title:'Quantum behaviour: the double slit',body:`<p>A compact way to see why quantum mechanics broke classical intuition is the double-slit experiment. Ordinary particles sent through two openings suggest two concentrations on a screen. Waves passing through the same openings overlap and produce an interference pattern.</p><p>Electrons arrive at the detector as localized impacts, one at a time, yet over many repetitions those impacts build an interference pattern. That observation does not by itself decide how quantum mechanics should be interpreted; it shows why the old simple choice between “particle” and “wave” is inadequate.</p><div class="go"><strong>Visual explainer</strong><p><a href="./double-slit/">Open the double-slit animation: classical particles, waves, and quantum interference.</a></p></div><p class="doc">Conceptual companion to sources 5–6.</p>`}""")
+
+          replace_note('G', 'H', """G:{title:'Deterministic or stochastic? Einstein’s dice',body:`<p>A deterministic theory says, roughly, that the state of a system together with its laws fixes what happens next. A stochastic theory assigns probabilities to possible outcomes.</p><p>Quantum mechanics predicts probabilities with extraordinary accuracy. The foundational dispute was over what those probabilities meant: were they merely a limit on what we could know, or part of the deepest description of nature?</p><p>Einstein’s 1926 “dice” remark to Max Born became the most famous shorthand for resistance to fundamental indeterminism.</p><p class="doc">Documentation: sources 6–7.</p>`}""")
+
+          replace_note('H', 'I', """H:{title:'Solvay 1927: what was actually lost',body:`<p>The 1927 debate did not experimentally disprove the pilot-wave idea. De Broglie presented it at the fifth Solvay Conference and faced serious objections, including a well-known challenge from Wolfgang Pauli.</p><p>He later described encountering difficulties he could not adequately answer and then rallying to the prevailing probabilistic, indeterministic interpretation. The historical fact is a change of position under pressure from arguments, not an experimental refutation of the theory at Solvay.</p><div class="go"><strong>Go further</strong><p><a href="https://educationalgames.nobelprize.org/educational/physics/quantised_world/intro-3.html" target="_blank" rel="noopener">Explore the Nobel Foundation’s interactive 1927 Solvay participant photograph.</a></p></div><p class="doc">Documentation: sources 6, 8–9 and 16.</p>`}""")
+
+          replace_note('L', 'M', """L:{title:'What is plasma, and what did Bohm do with it?',body:`<p>Plasma is often called the fourth state of matter: a gas energetic enough that many atoms are ionized, leaving freely moving charged particles. Because those particles interact through electromagnetic forces, a plasma can display large-scale collective behaviour.</p><p>Bohm did not discover plasma. He was, however, an important early contributor to plasma theory. With E. P. Gross he published influential work on plasma oscillations and collective electron behaviour.</p><p class="doc">Documentation: source 13.</p>`}""")
+
+          replace_note('M', 'N', """M:{title:'Bohm and Krishnamurti',body:`<p>Jiddu Krishnamurti was an Indian thinker who rejected organized spiritual authority and explicitly rejected the role of guru. His work focused on attention, conditioning, fear, thought and the possibility of observing without the distortions created by habit and psychological authority.</p><p>Bohm became particularly interested in Krishnamurti’s treatment of the relationship between the observer and the observed. Their dialogues are relevant here as biography and intellectual culture, not as evidence for quantum physics.</p><div class="go"><strong>Go further</strong><p><a href="https://kfoundation.org/krishnamurti-and-david-bohm/" target="_blank" rel="noopener">The Krishnamurti Foundation’s introduction to Bohm and Krishnamurti</a> includes Bohm’s own explanation of the connection.</p></div><p class="doc">Documentation: source 14.</p>`}""")
+
+          replace_note('N', 'O', """N:{title:'The return of the pilot wave',body:`<p>Bohm’s two 1952 papers constructed an explicit hidden-variable interpretation in which particles have definite configurations and the wave function participates in determining their motion. Modern accounts therefore often call the theory <em>de Broglie–Bohm theory</em> or <em>Bohmian mechanics</em>.</p><p>The theory is deterministic, but not simply classical mechanics hidden underneath quantum mechanics. For many particles the guiding wave lives in a high-dimensional configuration space, and the theory is explicitly nonlocal.</p><p>De Broglie did not respond to Bohm with instant, uncomplicated vindication. He reconsidered the issue and only then returned to a causal interpretation.</p><div class="go"><strong>Go further</strong><p><a href="https://plato.stanford.edu/entries/qm-bohm/" target="_blank" rel="noopener">The Stanford Encyclopedia’s entry on Bohmian mechanics</a> is demanding in places but exceptionally clear.</p></div><p class="doc">Documentation: sources 6, 8, 9 and 15.</p>`}""")
+
+          path.write_text(s, encoding='utf-8')
+          PY
+      - name: Commit changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add only-the-science/index.html
+          git commit -m "Refine text hierarchy and note chronology"
+          git push
