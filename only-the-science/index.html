@@ -2,44 +2,323 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#f4efe5">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#f3ede2">
 <title>Only the Science</title>
-<meta name="description" content="An impressionist portrait of curiosity, intellectual audacity, uncertainty, and the discipline of changing one’s mind.">
+<meta name="description" content="An interactive impressionist portrait of Louis de Broglie: curiosity, intellectual audacity, uncertainty, and the discipline of changing one’s mind.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,350;0,9..144,500;1,9..144,400&family=Inter:wght@500;600;700&family=Source+Serif+4:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
 <style>
-:root{--paper:#f4efe5;--ink:#1d1b18;--soft:#5d564d;--faint:#81786b;--rule:#cec3b0;--accent:#5f3941}
+:root{
+  --paper:#f3ede2; --paper2:#ebe2d4; --ink:#1a1917; --soft:#575149; --faint:#83796d;
+  --rule:#cbbfaa; --accent:#6b3742; --accent2:#40252c; --card:#faf6ee;
+  --night:#161a20; --night-ink:#f1eee7; --night-soft:#b8b5ae;
+  --quantum:#e9eef0; --cabinet:#eee8eb; --max:720px; --wide:1180px;
+}
 *{box-sizing:border-box}
-body{margin:0;background:radial-gradient(circle at 50% -10rem,rgba(95,57,65,.08),transparent 34rem),var(--paper);color:var(--ink);font-family:"Source Serif 4",Georgia,serif;-webkit-font-smoothing:antialiased}
-.wrap{width:min(calc(100% - 2.4rem),820px);margin:auto}
-nav{padding:1.25rem 0;border-bottom:1px solid var(--rule)}
-nav a{font:600 .72rem/1 "Inter",sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);text-decoration:none}
-header{padding:7rem 0 4rem;text-align:center}
-.kicker{font:700 .7rem/1 "Inter",sans-serif;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin-bottom:1.6rem}
-h1{font:500 clamp(3.5rem,10vw,6.5rem)/.94 "Fraunces",serif;letter-spacing:-.04em;margin:0 0 1.4rem}
-.deck{font:italic 400 clamp(1.15rem,3vw,1.45rem)/1.5 "Fraunces",serif;color:var(--soft);max-width:640px;margin:0 auto}
-.rule{width:72px;height:2px;background:var(--accent);opacity:.65;margin:3rem auto}
-.status{max-width:620px;margin:0 auto 7rem;text-align:center;color:var(--soft);font-size:1.08rem;line-height:1.68}
-.status strong{color:var(--ink)}
-footer{border-top:1px solid var(--rule);padding:1.5rem 0 2.5rem;text-align:center;font:500 .68rem/1.5 "Inter",sans-serif;letter-spacing:.07em;text-transform:uppercase;color:var(--faint)}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:"Source Serif 4",Georgia,serif;font-size:19px;line-height:1.72;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+button,a{font:inherit}
+a{color:var(--accent2)}
+.progress{position:fixed;top:0;left:0;height:3px;width:0;background:var(--accent);z-index:100}
+.topbar{position:fixed;top:0;left:0;right:0;z-index:60;display:flex;justify-content:space-between;align-items:center;padding:.85rem max(1rem,env(safe-area-inset-left));background:linear-gradient(to bottom,rgba(243,237,226,.96),rgba(243,237,226,.78),transparent);pointer-events:none}
+.topbar a,.topbar button{pointer-events:auto;border:0;background:none;color:var(--accent);text-decoration:none;font:600 .67rem/1 Inter,sans-serif;letter-spacing:.1em;text-transform:uppercase;padding:.5rem;cursor:pointer}
+.hero{min-height:94vh;display:grid;place-items:center;padding:8rem 1.4rem 5rem;background:radial-gradient(circle at 50% 8%,rgba(107,55,66,.09),transparent 28rem),var(--paper)}
+.hero-inner{max-width:880px;text-align:center}
+.kicker{font:700 .68rem/1 Inter,sans-serif;letter-spacing:.22em;text-transform:uppercase;color:var(--accent);margin-bottom:1.7rem}
+h1{font:550 clamp(3.7rem,10vw,7.5rem)/.9 Fraunces,serif;letter-spacing:-.045em;margin:0 0 1.6rem}
+.deck{font:italic 400 clamp(1.16rem,2.5vw,1.55rem)/1.48 Fraunces,serif;color:var(--soft);max-width:670px;margin:0 auto}
+.scroll-cue{margin-top:4rem;font:600 .64rem/1 Inter,sans-serif;text-transform:uppercase;letter-spacing:.17em;color:var(--faint)}
+.act{position:relative;padding:5.2rem 1.5rem;transition:background-color .7s ease,color .7s ease}
+.prose{max-width:var(--max);margin:0 auto}
+.act h2{margin:0 0 2.1rem;font:650 .76rem/1.25 Inter,sans-serif;letter-spacing:.16em;text-transform:uppercase;color:var(--accent)}
+.act p{margin:0 0 1.42rem}
+.act .lede{font-size:1.2rem;line-height:1.64}
+.act .beat{font-family:Fraunces,serif;font-size:1.18rem;line-height:1.5;font-style:italic;color:var(--soft);margin:2rem 0}
+.act .isolate{font-family:Fraunces,serif;font-size:clamp(1.45rem,4vw,2.15rem);line-height:1.4;margin:2.6rem 0;color:var(--accent2)}
+.archive{background:linear-gradient(180deg,var(--paper),#eee5d7)}
+.war{background:radial-gradient(circle at 50% 10%,#252c36,var(--night) 58%);color:var(--night-ink);padding-top:7rem;padding-bottom:7rem}
+.war h2{color:#d2a4ad}.war .beat{color:var(--night-soft)}.war .isolate{color:#e8bdc5}
+.quantum{background:linear-gradient(180deg,var(--quantum),#f2f1ec)}
+.cabinet{background:linear-gradient(180deg,#f2f1ec,var(--cabinet))}
+.bohm{background:linear-gradient(180deg,var(--cabinet),#e9eceb)}
+.constancy{background:#f4f0e7;padding-top:7rem;padding-bottom:7rem}
+.closing{background:radial-gradient(circle at 50% 30%,rgba(107,55,66,.08),transparent 26rem),var(--paper);padding-top:8rem;padding-bottom:8rem}
+.note-ref{display:inline-grid;place-items:center;min-width:1.35rem;height:1.35rem;border:1px solid rgba(107,55,66,.45);border-radius:50%;background:transparent;color:var(--accent);font:700 .66rem/1 Inter,sans-serif;vertical-align:super;margin-left:.16rem;cursor:pointer;transform:translateY(-.05em)}
+.note-ref:hover,.note-ref:focus-visible{background:var(--accent);color:white;outline:none}
+.war .note-ref{color:#f1c5cd;border-color:rgba(241,197,205,.55)}.war .note-ref:hover{background:#f1c5cd;color:#241820}
+.visual-break{max-width:980px;margin:3.7rem auto;padding:0 1.5rem}
+.visual-card{border:1px solid var(--rule);background:rgba(255,255,255,.45);padding:1.5rem;border-radius:2px}
+.visual-card .eyebrow{font:700 .62rem/1 Inter,sans-serif;letter-spacing:.17em;text-transform:uppercase;color:var(--accent);margin-bottom:.9rem}
+.visual-card h3{font:500 1.65rem/1.15 Fraunces,serif;margin:0 0 .75rem}
+.visual-card p{margin:.55rem 0;color:var(--soft);font-size:.94rem;line-height:1.55}
+.wave-demo{height:170px;position:relative;overflow:hidden;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);margin:2.8rem 0;background:linear-gradient(90deg,rgba(68,91,102,.02),rgba(68,91,102,.08),rgba(68,91,102,.02))}
+.wave-demo svg{width:100%;height:100%}.wave-demo .particle{animation:drift 6s ease-in-out infinite alternate}
+@keyframes drift{from{transform:translateX(0)}to{transform:translateX(56%)}}
+.dice{max-width:620px;margin:3rem auto;border-left:3px solid var(--accent);padding:1.2rem 1.5rem;font-family:Fraunces,serif;font-size:1.25rem;font-style:italic;line-height:1.5;background:rgba(255,255,255,.38)}
+.solvay-map{display:grid;gap:.55rem;margin:2.4rem 0 1rem;font-family:Inter,sans-serif;font-size:.67rem;text-align:center;color:#4b4f53}
+.solvay-row{display:grid;grid-template-columns:repeat(10,1fr);gap:.35rem}.solvay-row.middle{grid-template-columns:repeat(10,1fr)}.solvay-row.front{grid-template-columns:repeat(9,1fr);max-width:92%;margin:auto}
+.person{padding:.5rem .2rem;border:1px solid rgba(69,75,80,.2);background:rgba(255,255,255,.46);border-radius:999px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.person.hot{border-color:var(--accent);color:var(--accent);font-weight:700}
+.feature-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;max-width:1000px;margin:3.5rem auto;padding:0 1.5rem}
+.feature{min-height:240px;background:rgba(255,255,255,.48);border:1px solid rgba(107,55,66,.18);padding:1.35rem;display:flex;flex-direction:column;justify-content:space-between}
+.feature .letter{font:700 .7rem/1 Inter,sans-serif;color:var(--accent);text-transform:uppercase;letter-spacing:.13em}.feature h3{font:500 1.35rem/1.2 Fraunces,serif;margin:.9rem 0}.feature p{font-size:.9rem;line-height:1.5;color:var(--soft);margin:0}.feature button{align-self:flex-start;margin-top:1rem;border:0;border-bottom:1px solid var(--accent);background:none;color:var(--accent);font:600 .67rem/1.4 Inter,sans-serif;text-transform:uppercase;letter-spacing:.08em;cursor:pointer;padding:.2rem 0}
+.bohr-crest{width:92px;height:130px;object-fit:contain;display:block;margin:.25rem auto .2rem}
+.timeline{max-width:720px;margin:3rem auto;display:grid;grid-template-columns:auto 1fr;gap:0 1.2rem}.timeline .year{font:700 .68rem/1 Inter,sans-serif;color:var(--accent);padding-top:.35rem}.timeline .event{padding:0 0 1.35rem;border-left:1px solid var(--rule);padding-left:1.2rem}
+.final-quote{margin:3.5rem 0;text-align:center;font:italic 500 clamp(2rem,6vw,4rem)/1.1 Fraunces,serif;color:var(--accent2)}
+.endmark{text-align:center;margin-top:4rem;color:var(--accent);letter-spacing:.45em}
+.reader-companion{background:#e8dfd1;border-top:1px solid var(--rule);padding:5rem 1.5rem}
+.reader-companion .inner{max-width:900px;margin:auto}.reader-companion h2,.sources-wrap h2{font:650 .76rem/1.25 Inter,sans-serif;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin:0 0 1.4rem}.reader-companion p{color:var(--soft)}
+.note-index{display:grid;grid-template-columns:repeat(7,1fr);gap:.55rem;margin-top:2rem}.note-index button{aspect-ratio:1;border:1px solid rgba(107,55,66,.32);background:rgba(255,255,255,.35);color:var(--accent);font:700 .8rem/1 Inter,sans-serif;cursor:pointer}.note-index button:hover{background:var(--accent);color:#fff}
+.sources-wrap{background:#ded4c5;padding:3.5rem 1.5rem 5rem}.sources-wrap .inner{max-width:900px;margin:auto}.sources-wrap details{border-top:1px solid #b9aa96;border-bottom:1px solid #b9aa96;padding:1rem 0}.sources-wrap summary{cursor:pointer;font:650 .78rem/1.4 Inter,sans-serif;letter-spacing:.05em;color:var(--accent2)}.spoiler{margin:1.2rem 0;padding:1rem;background:rgba(255,255,255,.35);font-size:.9rem}.source{font-size:.86rem;line-height:1.55;color:#403b35;margin:1.1rem 0}.source strong{color:var(--accent)}
+.drawer-backdrop{position:fixed;inset:0;background:rgba(16,15,14,.42);z-index:80;opacity:0;pointer-events:none;transition:opacity .22s ease}.drawer{position:fixed;z-index:90;top:0;right:0;width:min(460px,92vw);height:100dvh;background:#fbf7ef;box-shadow:-20px 0 50px rgba(0,0,0,.18);transform:translateX(102%);transition:transform .28s ease;overflow:auto;padding:1.3rem 1.45rem 3rem}.drawer.open{transform:none}.drawer-backdrop.open{opacity:1;pointer-events:auto}.drawer-head{position:sticky;top:-1.3rem;background:linear-gradient(#fbf7ef 75%,transparent);padding:1.3rem 0 1.2rem;display:flex;justify-content:space-between;align-items:center;z-index:2}.drawer-letter{font:700 .7rem/1 Inter,sans-serif;letter-spacing:.15em;color:var(--accent);text-transform:uppercase}.close{border:0;background:none;font:500 1.4rem/1 Inter,sans-serif;color:var(--accent);cursor:pointer;padding:.5rem}.drawer h3{font:500 1.85rem/1.14 Fraunces,serif;margin:.4rem 0 1rem}.drawer p{font-size:.95rem;line-height:1.58;margin:0 0 1rem;color:#393530}.drawer .go{margin:1.5rem 0;padding:1rem;border-left:2px solid var(--accent);background:#f2eadf}.drawer .go strong{display:block;font:700 .64rem/1 Inter,sans-serif;text-transform:uppercase;letter-spacing:.12em;color:var(--accent);margin-bottom:.65rem}.drawer .doc{font:600 .66rem/1.45 Inter,sans-serif;letter-spacing:.04em;color:var(--faint);margin-top:1.5rem}.drawer img{max-width:180px;display:block;margin:1rem auto}.drawer .credit{font-size:.72rem;color:var(--faint);text-align:center}
+.reveal{opacity:0;transform:translateY(18px);transition:opacity .65s ease,transform .65s ease}.reveal.visible{opacity:1;transform:none}
+footer{padding:1.8rem 1.5rem 2.5rem;background:#d8cebf;text-align:center;font:600 .64rem/1.5 Inter,sans-serif;text-transform:uppercase;letter-spacing:.08em;color:#766c60}
+@media(max-width:780px){
+ body{font-size:17.5px}.topbar{padding:.6rem .55rem}.hero{min-height:86vh;padding:7rem 1.15rem 4rem}.act{padding:4.3rem 1.15rem}.war,.constancy,.closing{padding-top:5.5rem;padding-bottom:5.5rem}.feature-grid{grid-template-columns:1fr;padding:0 1.15rem}.feature{min-height:0}.solvay-row{grid-template-columns:repeat(5,1fr)!important}.solvay-row.front{max-width:100%}.person{font-size:.58rem}.note-index{grid-template-columns:repeat(7,1fr)}
+ .drawer{top:auto;bottom:0;right:0;width:100%;height:min(82dvh,760px);border-radius:18px 18px 0 0;transform:translateY(102%);padding:1rem 1.15rem calc(2rem + env(safe-area-inset-bottom))}.drawer.open{transform:none}.drawer-head{top:-1rem;padding:1rem 0}.visual-break{padding:0 1.15rem}.wave-demo{height:130px}
+}
+@media(max-width:430px){.note-index{grid-template-columns:repeat(5,1fr)}h1{font-size:clamp(3.2rem,18vw,5.2rem)}.deck{font-size:1.12rem}.act .isolate{font-size:1.55rem}.solvay-row{grid-template-columns:repeat(3,1fr)!important}.source{font-size:.82rem}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.reveal{opacity:1;transform:none;transition:none}.wave-demo .particle{animation:none}.drawer,.drawer-backdrop{transition:none}}
+@media print{.progress,.topbar,.note-ref,.reader-companion,.drawer,.drawer-backdrop{display:none!important}.hero{min-height:0;padding:2cm 0}.act{background:#fff!important;color:#000!important;padding:1cm 0}.prose{max-width:17cm}.sources-wrap{background:#fff}}
 </style>
 </head>
 <body>
-<nav><div class="wrap"><a href="../">← Essays</a></div></nav>
-<header class="wrap">
-  <div class="kicker">An impressionist portrait</div>
-  <h1>Only the Science</h1>
-  <p class="deck">Curiosity, intellectual audacity, uncertainty, and the discipline of changing one’s mind.</p>
-  <div class="rule"></div>
-</header>
-<main class="wrap">
-  <div class="status">
-    <p><strong>The interactive edition is being prepared.</strong></p>
-    <p>This page will become the scrollytelling version of the essay: the text will remain readable in full, while optional reader’s notes, historical images, conceptual explanations and source documentation will open around it.</p>
+<div class="progress" id="progress" aria-hidden="true"></div>
+<div class="topbar"><a href="../">← Essays</a><button id="notesButton" type="button">Reader’s notes</button></div>
+
+<header class="hero">
+  <div class="hero-inner reveal">
+    <div class="kicker">An impressionist portrait</div>
+    <h1>Only the Science</h1>
+    <p class="deck">Curiosity, intellectual audacity, uncertainty, and the discipline of changing one’s mind.</p>
+    <div class="scroll-cue">Scroll to read ↓</div>
   </div>
+</header>
+
+<main>
+<section class="act archive" id="portrait"><div class="prose reveal">
+<h2>An Impressionist Portrait</h2>
+<p class="lede">To write a portrait is to select: to look back across a life and say, among all that happened, this seems to matter; to notice a recurrence and wonder whether it was circumstance — or character.</p>
+<p>What follows is therefore not biography in the exhaustive sense, but neither is it allegory. The path was real. The choices were made. The words were spoken.</p>
+<p class="isolate">What follows is speculation.</p>
+<p>Not speculation as fantasy, but as commitment under uncertainty: the uneasy, happy point at which the picture remains incomplete, yet the pattern has become too strong to ignore.</p>
+<p class="beat">One does not know. But one has seen enough to take a position.</p>
+</div></section>
+
+<section class="act archive" id="letters"><div class="prose reveal">
+<h2>Science Through Letters</h2>
+<p>At the beginning of the twentieth century, physics was coming apart.<button class="note-ref" data-note="B" aria-label="Open reader's note B">B</button></p>
+<p>Planck had introduced the quantum. Einstein had made light behave like particles. Lorentz, Poincaré, Marie Curie and the other giants of European physics were trying to understand what exactly they had unleashed.</p>
+<p>In 1911, many of them gathered in Brussels for the first Solvay Conference. Among those close to the proceedings was a young French experimental physicist named Maurice.<button class="note-ref" data-note="A" aria-label="Open reader's note A">A</button></p>
+<p>He belonged there. His younger brother did not.</p>
+<p>The younger man had studied literature and history. Physics was not yet his profession, much less his destiny.</p>
+<p>But Maurice had been closely involved in recording the extraordinary discussions at Solvay and preparing their proceedings, and his younger brother was drawn into that work — reading the arguments, following the debates, encountering through them some of the greatest scientific minds of the age.</p>
+<p>The historian crossed the border. He had entered physics as a man of letters: through words, through arguments, through a document. He read, he listened, and something caught.</p>
+<p>Curiosity is common enough, but curiosity usually remains recreational. We read about another subject, admire it, perhaps speak about it.</p>
+<p>He did something else.</p>
+<p class="isolate">He entered it.</p>
+<p>His first degree was in history. Three years later he had a degree in science, for he had true ambition, the ambition to understand.<button class="note-ref" data-note="C" aria-label="Open reader's note C">C</button></p>
+</div></section>
+
+<section class="act war" id="darkening"><div class="prose reveal">
+<h2>The Darkening</h2>
+<p class="isolate">Then Europe went dark.</p>
+<p class="isolate">War.</p>
+<p>His studies stopped. He entered the army and spent much of the First World War working in wireless communications from the Eiffel Tower.</p>
+<p>The future theoretical physicist found himself dealing with apparatus, transmission, reception and radio.</p>
+<p>From the Eiffel Tower, he intercepted German communications.<button class="note-ref" data-note="D" aria-label="Open reader's note D">D</button></p>
+<p class="beat">Already, in a way, it was about waves.</p>
+<p>The war interrupted his curriculum but not his education.</p>
+<p>The theoretician learned something of the practical world. The younger brother of an experimental physicist handled technology rather than merely equations, and even an interruption became material.</p>
+<p>When peace returned, so did he.</p>
+</div></section>
+
+<section class="act quantum" id="latecomer"><div class="prose reveal">
+<h2>The Latecomer</h2>
+<p>And then the latecomer moved very quickly.</p>
+<p>He began thinking about one of the strangest facts emerging from the new physics. Light, long understood as a wave, could behave like particles.</p>
+<p class="isolate">What if the symmetry ran both ways? What if matter, which appeared to us as particles, could also behave like waves?</p>
+<div class="wave-demo" aria-label="Conceptual illustration of a particle associated with a wave">
+<svg viewBox="0 0 900 170" role="img" aria-label="A conceptual wave with a moving particle">
+<path d="M0 85 C55 20,110 150,165 85 S275 20,330 85 S440 150,495 85 S605 20,660 85 S770 150,825 85 S880 20,935 85" fill="none" stroke="#627681" stroke-width="3" opacity=".72"/>
+<g class="particle"><circle cx="150" cy="85" r="10" fill="#6b3742"/><circle cx="150" cy="85" r="20" fill="none" stroke="#6b3742" opacity=".22"/></g>
+</svg>
+</div>
+<p>It was an audacious thought, and he developed it in his doctoral thesis.<button class="note-ref" data-note="E" aria-label="Open reader's note E">E</button></p>
+<p>Soon electron diffraction would confirm the wave behaviour of matter, while Schrödinger would build upon the idea in developing wave mechanics.</p>
+<p>And in 1929, only five years after the doctorate, the Nobel Prize in Physics was awarded for the discovery of the wave nature of electrons.</p>
+<p class="isolate"><strong>The young historian, the soldier at the Eiffel Tower, the latecomer who had entered physics through the intellectual world of his elder brother, was Louis de Broglie.</strong></p>
+<p>That would already be enough for a remarkable life.</p>
+<p>It is not, however, the principal reason I admire him.</p>
+</div></section>
+
+<section class="act quantum" id="theory"><div class="prose reveal">
+<h2>The Theory He Let Go</h2>
+<p>Two years before the Nobel Prize, de Broglie had returned to Solvay.</p>
+<p>In 1911 he had encountered the great problems of physics from the margins; in 1927 he was looked upon as one of the men expected to solve them.<button class="note-ref" data-note="G" aria-label="Open reader's note G">G</button></p>
+<p>Quantum mechanics had become astonishingly successful, but with that success came an unsettling interpretation. At the deepest level, reality seemed not merely difficult to predict, but fundamentally probabilistic.<button class="note-ref" data-note="F" aria-label="Open reader's note F">F</button></p>
+<div class="dice">“God does not play dice” became the famous shorthand for Einstein’s resistance to the idea that probability was the final layer of reality. <button class="note-ref" data-note="F" aria-label="Open reader's note F">F</button></div>
+<p>De Broglie resisted.</p>
+<p>He proposed instead that the particle remained real, that it had a position and followed a trajectory, while the quantum wave guided it. What appeared to us as randomness might therefore conceal an underlying order.<button class="note-ref" data-note="G" aria-label="Open reader's note G">G</button></p>
+<p>The idea was challenged, and challenged hard. De Broglie defended it, but eventually concluded that he could not answer the objections well enough.</p>
+<p class="isolate">So he let it go.</p>
+<p>There is a familiar image of intellectual courage: the lone genius stands against the crowd, everybody tells him he is wrong, he refuses to bend, and eventually history vindicates him.</p>
+<p>Sometimes courage looks like that.</p>
+<p>But sometimes courage looks almost exactly opposite.</p>
+<p>De Broglie had every possible reason to become attached to his theory. He had already transformed physics once, his name carried authority, and he was about to receive its greatest honour. He could have spent decades defending his intellectual territory.</p>
+<p>Instead, when he believed the argument had moved against him, he moved with it.</p>
+<p>He abandoned his interpretation and, for roughly a quarter of a century, taught the prevailing one.<button class="note-ref" data-note="G" aria-label="Open reader's note G">G</button></p>
+<p>Not his own, but the theory that had defeated his.</p>
+<p class="beat">He had been ambitious enough to propose a new account of reality, but not vain enough to require reality to agree with him.</p>
+</div>
+<div class="visual-break reveal"><div class="visual-card">
+<div class="eyebrow">The Fifth Solvay Conference · Brussels · 1927</div>
+<h3>A room dense with twentieth-century physics</h3>
+<p>The famous group portrait contains Einstein, Curie, Planck, Lorentz, Bohr, Schrödinger, Pauli, Heisenberg, Dirac, Born and de Broglie among others. Rather than reproduce an archival photograph here without settling its present European rights status, this first edition maps some of the participants and links to the Nobel Foundation’s interactive identification in Reader’s Note G.</p>
+<div class="solvay-map" aria-label="Schematic map of selected 1927 Solvay participants">
+<div class="solvay-row"><span class="person">Schrödinger</span><span class="person">Pauli</span><span class="person">Heisenberg</span><span class="person">Brillouin</span><span class="person">Piccard</span><span class="person">Ehrenfest</span><span class="person">Henriot</span><span class="person">Herzen</span><span class="person">Fowler</span><span class="person">de Donder</span></div>
+<div class="solvay-row middle"><span class="person">Debye</span><span class="person">Bragg</span><span class="person">Kramers</span><span class="person">Dirac</span><span class="person">Compton</span><span class="person hot">de Broglie</span><span class="person">Born</span><span class="person">Bohr</span><span class="person">Knudsen</span><span class="person">Verschaffelt</span></div>
+<div class="solvay-row front"><span class="person">Planck</span><span class="person hot">Curie</span><span class="person">Lorentz</span><span class="person hot">Einstein</span><span class="person">Langevin</span><span class="person">Guye</span><span class="person">Wilson</span><span class="person">Richardson</span><span class="person">Langmuir</span></div>
+</div>
+</div></div>
+</section>
+
+<section class="act cabinet" id="outside"><div class="prose reveal">
+<h2>Outside of the Box</h2>
+<p>Perhaps that quality belonged to something wider in the intellectual culture which had produced him.</p>
+<p>The physicists of that extraordinary generation often seemed remarkably uninterested in remaining inside the boxes later assigned to them.</p>
+<p class="isolate">And not Schrödinger's box but the disciplinary ones.<button class="note-ref" data-note="H" aria-label="Open reader's note H">H</button></p>
+<p>Wolfgang Pauli could spend years exchanging ideas with Carl Gustav Jung, trying to understand whether physics and psychology might illuminate one another.<button class="note-ref" data-note="I" aria-label="Open reader's note I">I</button> Niels Bohr would place the yin-yang on his coat of arms beneath the motto <em>Contraria sunt complementa</em> — opposites are complementary.<button class="note-ref" data-note="J" aria-label="Open reader's note J">J</button></p>
+<p>Let us be clear: Quantum mechanics was not produced by mysticism; Bohr did not derive complementarity from Taoism, nor did Pauli discover physics through Jung.</p>
+<p>But perhaps there is still something worth noticing. These were minds remarkably unafraid of trespass. Physics, philosophy, psychology, mathematics, consciousness and metaphysics — the borders existed, but they were not walls.</p>
+<p>It is difficult not to wonder whether this freedom of movement had something to do with the extraordinary audacity of their science.</p>
+<p>In only a few decades, humanity radically altered its understanding of matter, light, space, time and causality. There have been immense advances since, but it is difficult to think of another period in modern science in which so much of the conceptual furniture of reality was overturned so quickly.</p>
+</div>
+<div class="feature-grid reveal">
+<div class="feature"><div><div class="letter">Reader’s Note H</div><h3>Schrödinger’s cat</h3><p>A cat, a sealed box and a thought experiment designed to make the strangeness of quantum superposition impossible to ignore.</p></div><button data-note="H">Open note H</button></div>
+<div class="feature"><div><div class="letter">Reader’s Note I</div><h3>Pauli × Jung</h3><p>A Nobel-level physicist and a founder of depth psychology correspond about symmetry, observation and the border between psyche and physics.</p></div><button data-note="I">Open note I</button></div>
+<div class="feature"><div><div class="letter">Reader’s Note J</div><img class="bohr-crest" src="https://upload.wikimedia.org/wikipedia/commons/d/da/Coat_of_Arms_of_Niels_Bohr.svg" alt="Reconstruction of Niels Bohr's coat of arms showing a yin-yang symbol"><h3>Bohr’s coat of arms</h3><p><em>Contraria sunt complementa</em>: opposites are complementary.</p></div><button data-note="J">Open note J</button></div>
+</div>
+</section>
+
+<section class="act bohm" id="bohm"><div class="prose reveal">
+<h2>Another Strange Mind</h2>
+<p>Then, some twenty-five years after de Broglie abandoned his theory, another unusual physicist appeared.</p>
+<p class="isolate">David Bohm.</p>
+<p>Bohm too was difficult to keep inside one box. He had already done important work in plasma physics, studying systems in which enormous numbers of charged particles could display collective behaviour.<button class="note-ref" data-note="K" aria-label="Open reader's note K">K</button></p>
+<p>But his intellectual interests ranged much further. Physics led into philosophy, philosophy into consciousness, and consciousness into psychology.</p>
+<p>For years he held conversations with the Indian thinker Jiddu Krishnamurti about thought, the observer, conditioning, perception and whether the mind could ever see without distorting what it saw.<button class="note-ref" data-note="L" aria-label="Open reader's note L">L</button></p>
+<p>He was, in other words, another one of those minds apparently unaware that intellectual subjects were supposed to remain in separate rooms.</p>
+<p>And in 1952, Bohm returned to the road de Broglie had abandoned.<button class="note-ref" data-note="M" aria-label="Open reader's note M">M</button></p>
+<p>He showed that a deterministic interpretation of quantum mechanics had not been killed after all. Particles could have definite positions, follow trajectories and be guided by a quantum wave.</p>
+<p class="isolate">The old theory lived.</p>
+<p>One can imagine how a lesser man might have reacted: vindication, twenty-five years of suppressed resentment suddenly released, an enormous <em>I told you so</em>.</p>
+<p>But de Broglie did something more characteristic: he looked again.</p>
+<p>He was not even immediately persuaded. He reconsidered the arguments and then, gradually, returned to the causal interpretation he had abandoned decades earlier.<button class="note-ref" data-note="M" aria-label="Open reader's note M">M</button></p>
+</div>
+<div class="visual-break reveal"><div class="timeline">
+<div class="year">1927</div><div class="event"><strong>de Broglie presents pilot-wave theory at Solvay.</strong><br>He later abandons the programme.</div>
+<div class="year">1952</div><div class="event"><strong>Bohm reconstructs a deterministic hidden-variable theory.</strong><br>The abandoned road is open again.</div>
+<div class="year">1950s</div><div class="event"><strong>de Broglie looks again.</strong><br>He returns gradually to a causal interpretation.</div>
+</div></div>
+</section>
+
+<section class="act constancy" id="constancy"><div class="prose reveal">
+<h2>Constancy</h2>
+<p class="isolate">He changed his mind twice.</p>
+<p>The historian became a physicist. The theoretician became a soldier dealing with radio equipment. The latecomer became a Nobel laureate. The radical became a teacher of orthodoxy. And the man who abandoned his theory returned to it when the argument changed again.</p>
+<p class="isolate"><strong>His opinions moved. His character did not.</strong></p>
+<p>De Broglie could believe something strongly without needing the belief to become part of himself. He could lose an argument without experiencing the loss as an injury, teach an opposing theory without imagining that doing so diminished the greatness of his own work, and return to an old idea without pretending that he had never doubted it.</p>
+<p>Perhaps this is also where the story returns to the speculation with which we began.</p>
+<p>We rarely possess the whole picture, yet neither are we condemned to ignorance. Somewhere between certainty and randomness lies judgment: enough pattern to justify conviction, enough uncertainty to keep conviction humble.</p>
+<p>That is the uneasy happiness of speculation.</p>
+<p class="isolate">One commits. But one remains movable.</p>
+<p>And that, perhaps, was de Broglie's deeper consistency: not fidelity to a particular conclusion, but fidelity to the process by which conclusions deserve to be held.</p>
+</div></section>
+
+<section class="act closing" id="science"><div class="prose reveal">
+<h2>Only the Science</h2>
+<p>We often imagine intellectual greatness as enormous confidence.</p>
+<p>De Broglie suggests another possibility: to think greatly may require enormous curiosity, extraordinary ambition and the courage to cross borders others regard as fixed.</p>
+<p>He once gave a wonderfully severe instruction to a man who wanted to write about him.<button class="note-ref" data-note="N" aria-label="Open reader's note N">N</button></p>
+<p>No biographical trivia.</p>
+<div class="final-quote">Seule, la Science.</div>
+<p>Only the science.</p>
+<p>It is a remarkable request, and perhaps an impossible one.</p>
+<p>Because in trying to remove the man from the story, he revealed something about the man.</p>
+<p>The argument mattered more than the author, the discovery more than the discoverer.</p>
+<p class="isolate">The truth more than the ownership of it.</p>
+<div class="endmark">◆</div>
+</div></section>
+
+<section class="reader-companion" id="reader-notes"><div class="inner">
+<h2>Reader’s Notes</h2>
+<p>The essay is written to stand on its own. These optional notes explain the science, historical references and intellectual background for readers who want to go further. They are lettered so they cannot be confused with the numbered documentary sources.</p>
+<div class="note-index" aria-label="Reader's notes index">
+<button data-note="A">A</button><button data-note="B">B</button><button data-note="C">C</button><button data-note="D">D</button><button data-note="E">E</button><button data-note="F">F</button><button data-note="G">G</button><button data-note="H">H</button><button data-note="I">I</button><button data-note="J">J</button><button data-note="K">K</button><button data-note="L">L</button><button data-note="M">M</button><button data-note="N">N</button>
+</div>
+</div></section>
+
+<section class="sources-wrap"><div class="inner">
+<h2>Sources & Documentation</h2>
+<details>
+<summary>Reveal documentary sources — contains biographical spoilers</summary>
+<div class="spoiler"><strong>Spoiler notice.</strong> The essay deliberately withholds the subject’s full identity until the Nobel Prize. Several sources below reveal it immediately. They are therefore not linked from the early Reader’s Notes.</div>
+<p class="source"><strong>1.</strong> Louis de Broglie, <em>Notice sur les travaux scientifiques</em> (1931, with later manuscript additions), Académie des sciences. <a href="https://www.academie-sciences.fr/pdf/dossiers/Broglie/Broglie_pdf/Broglie_oeuvre.pdf">Académie des sciences PDF</a>.</p>
+<p class="source"><strong>2.</strong> Collège de France, material on the first Solvay Council and first quantum revolution. <a href="https://www.college-de-france.fr/sites/default/files/media/document/2025-10/expo-atelier-quantique-2025-2026-livret-web.pdf">Collège de France PDF</a>.</p>
+<p class="source"><strong>3.</strong> Nobel Prize, <a href="https://www.nobelprize.org/prizes/physics/1929/broglie/biographical/?print=1">Louis de Broglie — Biographical</a>.</p>
+<p class="source"><strong>4.</strong> Académie française, <a href="https://www.academie-francaise.fr/les-immortels/louis-de-broglie?election=12-10-1944&fauteuil=1">Louis de Broglie — biography</a>.</p>
+<p class="source"><strong>5.</strong> Nobel Prize, <a href="https://www.nobelprize.org/prizes/physics/1929/summary/">The Nobel Prize in Physics 1929</a> and material on wave-particle duality.</p>
+<p class="source"><strong>6.</strong> Stanford Encyclopedia of Philosophy, <a href="https://plato.stanford.edu/entries/qm-bohm/">Bohmian Mechanics</a>.</p>
+<p class="source"><strong>7.</strong> John D. Norton, University of Pittsburgh, <a href="https://sites.pitt.edu/~jdnorton/teaching/HPS_0410/chapters/quantum_theory_completeness/index.html">Completeness of Quantum Theory</a>, discussing Einstein’s 1926 letter to Max Born and the dice remark.</p>
+<p class="source"><strong>8.</strong> Louis de Broglie, <a href="https://www.persee.fr/doc/rhs_0048-7996_1952_num_5_4_2967">“La physique quantique restera-t-elle indéterministe ?”</a>, <em>Revue d’histoire des sciences</em> 5/4 (1952).</p>
+<p class="source"><strong>9.</strong> Georges Lochak, <a href="https://doi.org/10.1007/BF01889267">“The evolution of the ideas of Louis de Broglie on the interpretation of wave mechanics”</a>, <em>Foundations of Physics</em> 12 (1982).</p>
+<p class="source"><strong>10.</strong> American Physical Society, <a href="https://www.aps.org/apsnews/2002/03/march-1935-schroedingers-paradoxical-cat">“Circa March 1935: Schrödinger’s paradoxical cat”</a>.</p>
+<p class="source"><strong>11.</strong> ETH Zurich Library, <a href="https://library.ethz.ch/en/collections-and-archives/platforms/virtual-exhibitions/wolfgang-pauli-and-modern-physics/wolfgang-pauli-and-carl-gustav-jung.html">Wolfgang Pauli and Carl Gustav Jung</a>.</p>
+<p class="source"><strong>12.</strong> Niels Bohr Archive / arkiv.dk, <a href="https://arkiv.dk/en/vis/5956924">Niels Bohr’s Coat of Arms</a>. The reconstruction displayed in Reader’s Note J is by GJo, via Wikimedia Commons, CC BY-SA 3.0.</p>
+<p class="source"><strong>13.</strong> D. Bohm and E. P. Gross, <a href="https://journals.aps.org/pr/abstract/10.1103/PhysRev.75.1851">“Theory of Plasma Oscillations. A. Origin of Medium-Like Behavior”</a>, <em>Physical Review</em> 75 (1949), and Part B.</p>
+<p class="source"><strong>14.</strong> Krishnamurti Foundation Trust, <a href="https://kfoundation.org/krishnamurti-and-david-bohm/">Krishnamurti and David Bohm</a>.</p>
+<p class="source"><strong>15.</strong> David Bohm, <a href="https://journals.aps.org/pr/abstract/10.1103/PhysRev.85.166">“A Suggested Interpretation of the Quantum Theory in Terms of ‘Hidden’ Variables. I”</a>, <em>Physical Review</em> 85 (1952), and Part II.</p>
+<p class="source"><strong>16.</strong> Nobel Prize educational archive, <a href="https://educationalgames.nobelprize.org/educational/physics/quantised_world/intro-3.html">Participants of the Fifth Solvay Congress, Brussels, October 1927</a>.</p>
+<p class="source"><strong>17.</strong> Jean Guitton, Académie française, <a href="https://www.academie-francaise.fr/le-duc-louis-de-broglie-temoignage-sur-lhomme-que-jai-connu-discours-prononce-pour-le-centenaire-de"><em>Le duc Louis de Broglie : témoignage sur l’homme que j’ai connu</em></a>, 15 June 1992.</p>
+</details>
+</div></section>
 </main>
-<footer>Only the Science</footer>
+
+<div class="drawer-backdrop" id="backdrop" aria-hidden="true"></div>
+<aside class="drawer" id="drawer" aria-label="Reader's note" aria-hidden="true">
+<div class="drawer-head"><div class="drawer-letter" id="drawerLetter">Reader’s Note</div><button class="close" id="closeDrawer" aria-label="Close reader's note">×</button></div>
+<div id="drawerContent"></div>
+</aside>
+
+<footer>Only the Science · Interactive edition</footer>
+
+<script>
+const notes={
+A:{title:'The Solvay Conferences',body:`<p>The Solvay meetings were invitation-only gatherings created to put leading scientists in the same room around problems that ordinary conferences were not resolving. The first physics meeting, in Brussels in 1911, was devoted to radiation and the new quantum problem. It included figures such as Planck, Einstein, Lorentz, Poincaré, Rutherford and Marie Curie.</p><p>Maurice served as one of the scientific secretaries, helping preserve the reports and discussion. The important point for this portrait is that the younger brother encountered the new physics not first through a textbook, but through a record of scientists arguing at the frontier of what they knew.</p><div class="go"><strong>Go further</strong><p>After the Nobel reveal, compare the participant lists from the 1911 and 1927 Solvay meetings. The 1927 group has become one of the iconic gatherings in the history of science.</p></div><p class="doc">Documentation: sources 1–2.</p>`},
+B:{title:'What was “coming apart”?',body:`<p>Classical mechanics encouraged physicists to picture the physical world as objects moving according to continuous laws. At the fundamental level, that picture was deterministic: if one knew the state of a system and the laws governing it, the later state followed from the earlier one.</p><p>Around 1900, several phenomena resisted that framework. Planck found that energy exchange had to be treated in discrete packets — <em>quanta</em>. Einstein pushed the idea further by treating light itself, in some circumstances, as if it came in localized packets. The old categories — wave or particle, continuous or discrete — were no longer fitting together cleanly.</p><div class="go"><strong>Question to carry through the essay</strong><p>When physics gives us probabilities, are they only a measure of what we do not know, or are probabilities built into nature itself?</p></div><p class="doc">Documentation: sources 2, 5 and 6.</p>`},
+C:{title:'A late arrival, but not a naïve one',body:`<p>A degree in history followed only three years later by a science degree is unusually fast, especially for someone who would soon work at the foundations of theoretical physics. The essay calls this “true ambition”: not a claim that fame did not matter to him, which we cannot know, but an interpretation of the observable fact that he was willing to cross into a difficult field and do the work required to belong there.</p><p>There is an important counterweight to the romantic picture. His elder brother was an accomplished experimental physicist, and the younger man had access to a laboratory culture and to current scientific discussion. He was a latecomer, not an isolated amateur.</p><p class="doc">Documentation: sources 1 and 3.</p>`},
+D:{title:'The Eiffel Tower was a radio station',body:`<p>The Tower was not merely a monument. Its height made it strategically useful for early wireless telegraphy, and during the First World War it became part of France’s military communications and interception infrastructure.</p><p>The young soldier assigned there worked with radio equipment and, according to the Académie française’s biography, helped capture German messages for decipherment. That makes the essay’s recurring image of “waves” more than a literary coincidence: before his most famous theoretical work, he had spent years around a practical technology built on electromagnetic waves.</p><p class="doc">Documentation: sources 3–4.</p>`},
+E:{title:'Matter waves, without the mathematics',body:`<p>A particle is easy to imagine as a thing: a grain of sand, a billiard ball, an electron. A wave seems categorically different: it spreads, interferes and can pass through several possible routes before producing a pattern.</p><p>The radical move was to propose that matter itself has a wave aspect. For a particle moving with momentum <em>p</em>, the associated wavelength is written λ = h/p. You do not need the equation to grasp the leap: properties previously assigned to light were being extended to material particles.</p><p>Experiments showing electron diffraction later gave striking support to the idea, and Schrödinger’s wave mechanics developed the wave description into one of the central mathematical formulations of quantum theory.</p><p class="doc">Documentation: sources 3 and 5.</p>`},
+F:{title:'Deterministic or stochastic? Einstein’s dice',body:`<p>A deterministic theory says, roughly, that the state of a system together with its laws fixes what happens next. A stochastic theory assigns probabilities to possible outcomes. Quantum mechanics predicts probabilities with extraordinary accuracy; the interpretive dispute is over what those probabilities mean.</p><p>Albert Einstein was one of the most famous dissenters from the idea that irreducible randomness was the final story. In a 1926 letter to Max Born he used the image later remembered as “God does not play dice.” It was not a theological proof. It was a memorable expression of resistance to fundamental indeterminism.</p><div class="go"><strong>Important distinction</strong><p>Einstein’s own position was not identical to de Broglie–Bohm theory. The shared question is whether quantum probability is a complete description or whether a deeper account remains possible.</p></div><p class="doc">Documentation: sources 6–7.</p>`},
+G:{title:'Pilot waves, Solvay 1927, and what was actually lost',body:`<p>In the pilot-wave picture, a particle has an actual position and trajectory, while a wave function helps determine how it moves. This differs sharply from interpretations in which the wave function is treated as the complete description of an individual system.</p><p>At the fifth Solvay Conference in 1927, de Broglie presented this approach and faced serious objections, including a well-known challenge from Wolfgang Pauli. The historical caution is important: the theory was <strong>not experimentally disproved at Solvay</strong>.</p><p>De Broglie later described encountering difficulties and objections and then rallying to the probabilistic, indeterministic viewpoint. Historical accounts record that he embraced the prevailing interpretation for roughly twenty-five years before returning to his earlier causal programme.</p><div class="go"><strong>Go further</strong><p><a href="https://educationalgames.nobelprize.org/educational/physics/quantised_world/intro-3.html" target="_blank" rel="noopener">Explore the Nobel Foundation’s interactive 1927 Solvay participant photograph.</a></p></div><p>The documented fact is the change of position. Reading that change as evidence of humility or intellectual detachment is the portrait’s interpretation.</p><p class="doc">Documentation: sources 6, 8–9 and 16.</p>`},
+H:{title:'Schrödinger’s cat — and the box',body:`<p>In 1935 Erwin Schrödinger imagined a cat sealed in a box with a mechanism connected to a quantum event, such as the decay of a radioactive atom. If one applies quantum superposition literally to the whole arrangement before observation, the formal description involves both the live-cat and dead-cat possibilities.</p><p>Schrödinger introduced the example to dramatize how strange it is to carry microscopic quantum descriptions straight into the everyday world — not because he believed ordinary cats are casually half alive and half dead.</p><div class="go"><strong>The joke in the heading</strong><p>Schrödinger really did put his cat in a conceptual box. The essay is interested in different boxes — disciplinary ones.</p></div><p class="doc">Documentation: source 10.</p>`},
+I:{title:'Wolfgang Pauli and Carl Gustav Jung',body:`<p>Pauli was one of the architects of quantum mechanics and the physicist behind the exclusion principle. Jung was one of the founders of depth psychology, associated with ideas such as archetypes, the collective unconscious and synchronicity.</p><p>Their relationship began in the context of a serious personal crisis for Pauli and developed into a long intellectual correspondence. What makes it interesting here is not that psychology secretly explains quantum mechanics. It is that two major thinkers in different fields were willing to ask whether ideas such as symmetry, complementarity and the structure of observation might illuminate questions on both sides of a disciplinary boundary.</p><div class="go"><strong>Go further</strong><p><a href="https://library.ethz.ch/en/collections-and-archives/platforms/virtual-exhibitions/wolfgang-pauli-and-modern-physics/wolfgang-pauli-and-carl-gustav-jung.html" target="_blank" rel="noopener">ETH Zurich’s Pauli–Jung exhibition</a> is an excellent short introduction.</p></div><p class="doc">Documentation: source 11.</p>`},
+J:{title:'Bohr’s yin-yang',body:`<img src="https://upload.wikimedia.org/wikipedia/commons/d/da/Coat_of_Arms_of_Niels_Bohr.svg" alt="Reconstruction of Niels Bohr's coat of arms"><p>Niels Bohr developed the principle of <em>complementarity</em>: in quantum physics, descriptions that appear mutually exclusive — most famously wave and particle descriptions — can each be necessary for a complete account of what experiments reveal, even though they cannot simply be combined into one classical picture.</p><p>When Bohr received Denmark’s Order of the Elephant in 1947, he designed a coat of arms centered on the yin-yang symbol with the Latin motto <em>Contraria sunt complementa</em> — “opposites are complementary.”</p><p>The symbol should not be read backwards into the physics: Bohr’s complementarity was developed from the problems of quantum theory, not derived from Taoism.</p><p class="credit">Coat-of-arms reconstruction: GJo / Wikimedia Commons, CC BY-SA 3.0.</p><p class="doc">Documentation: source 12.</p>`},
+K:{title:'What is plasma, and what did Bohm do with it?',body:`<p>Plasma is often called the fourth state of matter: a gas energetic enough that many atoms are ionized, leaving freely moving charged particles. Because those particles interact through electromagnetic forces, a plasma can behave collectively.</p><p>Bohm did not discover plasma. He was, however, an important early contributor to plasma theory. With E. P. Gross he published influential work on plasma oscillations and on the emergence of medium-like collective behaviour.</p><p>That background is suggestive in a portrait of Bohm because much of his later thinking likewise resisted reducing the behaviour of a whole system to an inventory of isolated parts — though that thematic connection is an interpretation, not a scientific derivation.</p><p class="doc">Documentation: source 13.</p>`},
+L:{title:'Bohm and Krishnamurti',body:`<p>Jiddu Krishnamurti was an Indian philosopher and religious teacher whose work focused on attention, conditioning, fear, thought and the possibility of observing without the distortions created by habit and psychological authority.</p><p>Bohm encountered his work in the late 1950s and became particularly interested in Krishnamurti’s treatment of the relationship between the observer and the observed — a phrase with obvious resonance for someone who had spent his life thinking about quantum theory.</p><p>Their dialogues should not be used as evidence for quantum physics. Their relevance here is biographical and intellectual: Bohm was willing to move from mathematical physics into sustained conversations about mind and perception without treating the disciplinary border as a prohibition.</p><div class="go"><strong>Go further</strong><p><a href="https://kfoundation.org/krishnamurti-and-david-bohm/" target="_blank" rel="noopener">The Krishnamurti Foundation’s introduction to Bohm and Krishnamurti</a> includes Bohm’s own explanation of why the connection interested him.</p></div><p class="doc">Documentation: source 14.</p>`},
+M:{title:'The return of the pilot wave',body:`<p>Bohm’s two 1952 papers constructed an explicit hidden-variable interpretation in which particles have definite configurations and the wave function participates in determining their motion. Modern accounts therefore often call the theory <em>de Broglie–Bohm theory</em> or <em>Bohmian mechanics</em>.</p><p>The theory is deterministic, but it is not simply classical mechanics hiding underneath quantum mechanics. For many particles the guiding wave lives in a high-dimensional configuration space, and the theory is explicitly nonlocal.</p><p>De Broglie did not instantly respond to Bohm with uncomplicated vindication. He reconsidered the issue and then returned to a causal interpretation. That is why the essay treats the second change of mind as important as the first.</p><div class="go"><strong>Go further</strong><p><a href="https://plato.stanford.edu/entries/qm-bohm/" target="_blank" rel="noopener">The Stanford Encyclopedia’s entry on Bohmian mechanics</a> is demanding in places but exceptionally clear.</p></div><p class="doc">Documentation: sources 6, 8, 9 and 15.</p>`},
+N:{title:'“Only the Science.”',body:`<p>The quotation comes from Jean Guitton, a philosopher and member of the Académie française who knew de Broglie personally. In a 1992 centenary address, Guitton recalled that de Broglie had given a prospective biographer severe instructions: say that he was born in Dieppe, omit the biographical details that interest nobody — <em>“Seule, la Science !”</em></p><p>That is testimony, not a stenographic record made at the moment the instruction was given, so it should be treated as a remembered quotation. But it comes from a named contemporary who explicitly presented the speech as personal testimony about the man he knew.</p><div class="go"><strong>Go further</strong><p>After finishing the essay, Guitton’s full address is worth reading. It deliberately argues the opposite side of de Broglie’s instruction, insisting that the humanity of a thinker can illuminate the work.</p></div><p class="doc">Documentation: source 17.</p>`}
+};
+const drawer=document.getElementById('drawer'),backdrop=document.getElementById('backdrop'),content=document.getElementById('drawerContent'),letter=document.getElementById('drawerLetter');
+function openNote(id){const n=notes[id];if(!n)return;letter.textContent=`Reader’s Note ${id}`;content.innerHTML=`<h3>${n.title}</h3>${n.body}`;drawer.classList.add('open');backdrop.classList.add('open');drawer.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';document.getElementById('closeDrawer').focus()}
+function closeNote(){drawer.classList.remove('open');backdrop.classList.remove('open');drawer.setAttribute('aria-hidden','true');document.body.style.overflow=''}
+document.querySelectorAll('[data-note]').forEach(el=>el.addEventListener('click',()=>openNote(el.dataset.note)));
+document.getElementById('closeDrawer').addEventListener('click',closeNote);backdrop.addEventListener('click',closeNote);document.addEventListener('keydown',e=>{if(e.key==='Escape')closeNote()});
+document.getElementById('notesButton').addEventListener('click',()=>document.getElementById('reader-notes').scrollIntoView({behavior:'smooth'}));
+const progress=document.getElementById('progress');function updateProgress(){const d=document.documentElement;const max=d.scrollHeight-d.clientHeight;progress.style.width=(max?d.scrollTop/max*100:0)+'%'};document.addEventListener('scroll',updateProgress,{passive:true});updateProgress();
+const observer=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')}),{threshold:.12});document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+</script>
 </body>
 </html>
