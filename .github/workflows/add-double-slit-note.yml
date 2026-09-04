@@ -14,7 +14,69 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Patch essay
-        run: echo 'ZnJvbSBwYXRobGliIGltcG9ydCBQYXRoCmltcG9ydCByZQoKcGF0aCA9IFBhdGgoIm9ubHktdGhlLXNjaWVuY2UvaW5kZXguaHRtbCIpCnMgPSBwYXRoLnJlYWRfdGV4dChlbmNvZGluZz0idXRmLTgiKQoKcyA9IHMu cmVwbGFjZSgnLmFjdCBoMnttYXJnaW46MCAwIDIuMXJlbTtmb250OjY1MCAuNzZyZW0vMS4yNSBJbnRlcixzYW5zLXNlcmlmO2xldHRlci1zcGFjaW5nOi4xNmVtO3RleHQtdHJhbnNmb3JtOnVwcGVyY2FzZTtjb2xvcjp2YXIoLS1hY2NlbnQpfScsICcuYWN0IGgye21hcmdpbjowIDAgMi4xcmVtO2ZvbnQ6NzAwIDFyZW0vMS4yNSBJbnRlcixzYW5zLXNlcmlmO2xldHRlci1zcGFjaW5nOi4xMDVlbTt0ZXh0LXRyYW5zZm9ybTp1cHBlcmNhc2U7Y29sb3I6dmFyKC0tYWNjZW50KX0nKQpzID0gcy5yZXBsYWNlKCc8ZGl2IGNsYXNzPSJnbyI+PHN0cm9uZz5WaXN1YWwgZXhwbGFpbmVyPC9zdHJvbmc+PHA+PGEgaHJlZj0iLi9kb3VibGUtc2xpdC8iPlNlZSB0aGUgZG91YmxlLXNsaXQgZXhwZXJpbWVudDogY2xhc3NpY2FsIHBhcnRpY2xlcywgd2F2ZXMsIGFuZCBxdWFudHVtIGludGVyZmVyZW5jZS48L2E+PC9wPjwvZGl2PicsICcnKQoKbGV0dGVycyA9IGxpc3QoIkZHSElKS0xNTiIpCmZvciBvbGQgaW4gcmV2ZXJzZWQobGV0dGVycyk6CiAgICBuZXcgPSBjaHIob3JkKG9sZCkgKyAxKQogICAgcyA9IHMu cmVwbGFjZShmJ2RhdGEtbm90ZT0ie29sZH0iJywgZidkYXRhLW5vdGU9IntuZXd9IicpCiAgICBzID0gcy5yZXBsYWNlKGYiZGF0YS1ub3RlPSd7b2xkfSciLCBmImRhdGEtbm90ZT0ne25ld30nIikKICAgIHMgPSBzLnJlcGxhY2UoZiJSZWFkZXLigJlzIE5vdGUge29sZH0iLCBmIlJlYWRlcuKAmXMgTm90ZSB7bmV3fSIpCiAgICBzID0gcy5yZXBsYWNlKGYiUmVhZGVyJ3MgTm90ZSB7b2xkfSIsIGYiUmVhZGVyJ3MgTm90ZSB7bmV3fSIpCiAgICBzID0gcy5yZXBsYWNlKGYiXG57b2xkfTp7e3RpdGxlOiIsIGYiXG57bmV3fTp7e3RpdGxlOiIpCgpmb3Igb2xkIGluIHJldmVyc2VkKGxldHRlcnMpOgogICAgbmV3ID0gY2hyKG9yZChvbGQpICsgMSkKICAgIHMgPSByZS5zdWIocmYnKDxidXR0b25bXj5dKmRhdGEtbm90ZT0ie25ld30iW14+XSo+KXt vbGR9KDwvYnV0dG9uPiknLCByZidcMXtuZXd9XDInLCBzKQoKb2xkX3BhcmEgPSAnPHA+UXVhbnR1bSBtZWNoYW5pY3MgaGFkIGJlY29tZSBhc3RvbmlzaGluZ2x5IHN1Y2Nlc3NmdWwsIGJ1dCB3aXRoIHRoYXQgc3VjY2VzcyBjYW1lIGFuIHVuc2V0dGxpbmcgaW50ZXJwcmV0YXRpb24uIEF0IHRoZSBkZWVwZXN0IGxldmVsLCByZWFsaXR5IHNlZW1lZCBub3QgbWVyZWx5IGRpZmZpY3VsdCB0byBwcmVkaWN0LCBidXQgZnVuZGFtZW50YWxseSBwcm9iYWJpbGlzdGljLjxidXR0b24gY2xhc3M9Im5vdGUtcmVmIiBkYXRhLW5vdGU9IkciIGFyaWEtbGFiZWw9Ik9wZW4gUmVhZGVyJ3MgTm90ZSBHIj5HPC9idXR0b24+PC9wPicKbmV3X3BhcmEgPSAnPHA+UXVhbnR1bSBtZWNoYW5pY3MgaGFkIGJlY29tZSBhc3RvbmlzaGluZ2x5IHN1Y2Nlc3NmdWwsIGJ1dCB3aXRoIHRoYXQgc3VjY2VzcyBjYW1lIGFuIHVuc2V0dGxpbmcgaW50ZXJwcmV0YXRpb24uPGJ1dHRvbiBjbGFzcz0ibm90ZS1yZWYiIGRhdGEtbm90ZT0iRiIgYXJpYS1sYWJlbD0iT3BlbiBSZWFkZXIncyBOb3RlIEYiPkY8L2J1dHRvbj4gQXQgdGhlIGRlZXBlc3QgbGV2ZWwsIHJlYWxpdHkgc2VlbWVkIG5vdCBtZXJlbHkgZGlmZmljdWx0IHRvIHByZWRpY3QsIGJ1dCBmdW5kYW1lbnRhbGx5IHByb2JhYmlsaXN0aWMuPGJ1dHRvbiBjbGFzcz0ibm90ZS1yZWYiIGRhdGEtbm90ZT0iRyIgYXJpYS1sYWJlbD0iT3BlbiBSZWFkZXIncyBOb3RlIEciPkc8L2J1dHRvbj48L3A+JwppZiBvbGRfcGFyYSBub3QgaW4gczoKICAgIHJhaXNlIFN5c3RlbUV4aXQoIlF1YW50dW0gbWVjaGFuaWNzIHBhcmFncmFwaCBub3QgZm91bmQiKQpzID0gcy5yZXBsYWNlKG9sZF9wYXJhLCBuZXdfcGFyYSwgMSkKCm1hcmtlciA9ICc8YnV0dG9uIGRhdGEtbm90ZT0iRSI+RTwvYnV0dG9uPicKaWYgbWFya2VyIG5vdCBpbiBzOgogICAgcmFpc2UgU3lzdGVtRXhpdCgiTm90ZSBFIGluZGV4IGJ1dHRvbiBub3QgZm91bmQiKQpzID0gcy5yZXBsYWNlKG1hcmtlciwgbWFya2VyICsgJzxidXR0b24gZGF0YS1ub3RlPSJGIj5GPC9idXR0b24+JywgMSkKCmJvdW5kYXJ5ID0gJzxwIGNsYXNzPSJkb2MiPkRvY3VtZW50YXRpb246IHNvdXJjZXMgMyBhbmQgNS48L3A+YH0sXG5HOnt0aXRsZTonCmlmIGJvdW5kYXJ5IG5vdCBpbiBzOgogICAgcmFpc2UgU3lzdGVtRXhpdCgiTm90ZSBFL0cgYm91bmRhcnkgbm90IGZvdW5kIikKcyA9IHMucmVwbGFjZShib3VuZGFyeSwgJzxwIGNsYXNzPSJkb2MiPkRvY3VtZW50YXRpb246IHNvdXJjZXMgMyBhbmQgNS48L3A+YH0sXG5GOnt0aXRsZTpcJ1RoZSBkb3VibGUgc2xpdCDigJQgcXVhbnR1bSB0aGVvcnkgaW4gb25lIGV4cGVyaW1lbnRcJyxib2R5OmA8cD5PbmUgZXhwZXJpbWVudCBjYXB0dXJlcyBtdWNoIG9mIHdoYXQgbWFkZSBxdWFudHVtIHRoZW9yeSBzbyB1bnNldHRsaW5nLiBTZW5kIG9yZGluYXJ5IHBhcnRpY2xlcyB0aHJvdWdoIHR3byBvcGVuaW5ncyBhbmQgeW91IGV4cGVjdCB0d28gY29uY2VudHJhdGlvbnMgb24gdGhlIHNjcmVlbiBiZWhpbmQgdGhlbS4gU2VuZCB3YXZlcyB0aHJvdWdoIHRoZSBzYW1lIG9wZW5pbmdzIGFuZCB0aGUgd2F2ZXMgb3ZlcmxhcCwgcHJvZHVjaW5nIGFuIGludGVyZmVyZW5jZSBwYXR0ZXJuLjwvcD48cD5FbGVjdHJvbnMgY29tcGxpY2F0ZSB0aGUgcGljdHVyZS4gVGhleSBhcnJpdmUgb24gdGhlIGRldGVjdG9yIG9uZSBhdCBhIHRpbWUsIGFzIGxvY2FsaXplZCBpbXBhY3RzLCB5ZXQgb3ZlciBtYW55IHJlcGV0aXRpb25zIHRob3NlIGltcGFjdHMgYnVpbGQgdXAgaW50byBhbiBpbnRlcmZlcmVuY2UgcGF0dGVybi4gVGhlIHJlc3VsdCBkb2VzIG5vdCBieSBpdHNlbGYgdGVsbCB1cyB3aGljaCBpbnRlcnByZXRhdGlvbiBvZiBxdWFudHVtIG1lY2hhbmljcyBpcyBjb3JyZWN0LiBJdCB0ZWxscyB1cyB0aGF0IHRoZSBvbGQgY2hvaWNlIGJldHdlZW4g4oCccGFydGljbGXigJ0gYW5kIOKAnHdhdmXigJ0gaXMgbm8gbG9uZ2VyIGVub3VnaC48L3A+PGRpdiBjbGFzcz0iZ28iPjxzdHJvbmc+VmlzdWFsIGV4cGxhaW5lcjwvc3Ryb25nPjxwPjxhIGhyZWY9Ii4vZG91YmxlLXNsaXQvIj5PcGVuIHRoZSBkb3VibGUtc2xpdCBleHBlcmltZW50OiBjbGFzc2ljYWwgcGFydGljbGVzLCB3YXZlcywgYW5kIHF1YW50dW0gaW50ZXJmZXJlbmNlLjwvYT48L3A+PC9kaXY+PHA+VGhpcyBpcyB0aGUgcGhlbm9tZW5vbiBmaXJzdC4gVGhlIGxhdGVyIHBpbG90LXdhdmUgZGlzY3Vzc2lvbiBhc2tzIGEgZGlmZmVyZW50IHF1ZXN0aW9uOiB3aGF0IGFjY291bnQgb2YgcmVhbGl0eSBjb3VsZCBwcm9kdWNlIGl0PzwvcD48cCBjbGFzcz0iZG9jIj5Db25jZXB0dWFsIGNvbXBhbmlvbiB0byBzb3VyY2VzIDXigJM2LjwvcD5gfSxcbkc6e3RpdGxlOicsIDEpCgpwYXRoLndyaXRlX3RleHQocywgZW5jb2Rpbmc9InV0Zi04IikK' | tr -d ' ' | base64 -d | python
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+
+          path = Path('only-the-science/index.html')
+          s = path.read_text(encoding='utf-8')
+
+          # Stronger section-heading hierarchy.
+          s = s.replace(
+              '.act h2{margin:0 0 2.1rem;font:650 .76rem/1.25 Inter,sans-serif;letter-spacing:.16em;text-transform:uppercase;color:var(--accent)}',
+              '.act h2{margin:0 0 2.1rem;font:700 1rem/1.25 Inter,sans-serif;letter-spacing:.105em;text-transform:uppercase;color:var(--accent)}'
+          )
+
+          # Note E returns to matter waves only.
+          s = s.replace(
+              '<div class="go"><strong>Visual explainer</strong><p><a href="./double-slit/">See the double-slit experiment: classical particles, waves, and quantum interference.</a></p></div>',
+              ''
+          )
+
+          # Make room for a dedicated F note: shift the existing F–N notes to G–O.
+          letters = list('FGHIJKLMN')
+          for old in reversed(letters):
+              new = chr(ord(old) + 1)
+              s = s.replace(f'data-note="{old}"', f'data-note="{new}"')
+              s = s.replace(f"data-note='{old}'", f"data-note='{new}'")
+              for phrase in ('Reader’s Note', "Reader's Note", 'reader’s note', "reader's note"):
+                  s = s.replace(f'{phrase} {old}', f'{phrase} {new}')
+              s = s.replace(f'\n{old}:{{title:', f'\n{new}:{{title:')
+
+          # Shift the visible letters in the note index.
+          for old in reversed(letters):
+              new = chr(ord(old) + 1)
+              s = re.sub(
+                  rf'(<button[^>]*data-note="{new}"[^>]*>){old}(</button>)',
+                  rf'\1{new}\2',
+                  s
+              )
+
+          # Add direct F access at the first introduction of quantum mechanics.
+          needle = '<p>Quantum mechanics had become astonishingly successful, but with that success came an unsettling interpretation.'
+          replacement = needle + '<button class="note-ref" data-note="F" aria-label="Open reader\'s note F">F</button>'
+          if needle not in s:
+              raise SystemExit('Quantum mechanics introduction not found')
+          s = s.replace(needle, replacement, 1)
+
+          # Add F to the Reader’s Notes index.
+          marker = '<button data-note="E">E</button>'
+          if marker not in s:
+              raise SystemExit('Note E index button not found')
+          s = s.replace(marker, marker + '<button data-note="F">F</button>', 1)
+
+          # Add the dedicated double-slit note between E and the shifted G.
+          boundary = '<p class="doc">Documentation: sources 3 and 5.</p>`},\nG:{title:'
+          if boundary not in s:
+              raise SystemExit('Note E/G boundary not found')
+          note_f = '''<p class="doc">Documentation: sources 3 and 5.</p>`},
+          F:{title:'The double slit — quantum theory in one experiment',body:`<p>One experiment captures much of what made quantum theory so unsettling. Send ordinary particles through two openings and you expect two concentrations on the screen behind them. Send waves through the same openings and the waves overlap, producing an interference pattern.</p><p>Electrons complicate the picture. They arrive on the detector one at a time, as localized impacts, yet over many repetitions those impacts build up into an interference pattern. The result does not by itself tell us which interpretation of quantum mechanics is correct. It tells us that the old choice between “particle” and “wave” is no longer enough.</p><div class="go"><strong>Visual explainer</strong><p><a href="./double-slit/">Open the double-slit experiment: classical particles, waves, and quantum interference.</a></p></div><p>This is the phenomenon first. The later pilot-wave discussion asks a different question: what account of reality could produce it?</p><p class="doc">Conceptual companion to sources 5–6.</p>`},
+          G:{title:'''
+          s = s.replace(boundary, note_f, 1)
+
+          path.write_text(s, encoding='utf-8')
+          PY
       - name: Commit changes
         run: |
           git config user.name "github-actions[bot]"
