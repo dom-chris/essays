@@ -157,7 +157,7 @@
             <label class="field-label" for="status">Origine de la réponse</label>
             <select class="field" id="status">
               <option value="all">Toutes (A + B + C)</option>
-              <option value="A">A — Dans le cours</option>
+              <option value="A">A — Notions du cours</option>
               <option value="B">B — À déduire</option>
               <option value="C">C — Complément</option>
             </select>
@@ -169,7 +169,7 @@
           <label class="check"><input type="checkbox" id="weak"> Seulement les questions « à revoir »</label>
         </div>
         <div class="legend">
-          <p><b>A</b> : réponse explicitement présente dans le cours.</p>
+          <p><b>A</b> : définition, notation ou exemple abordé dans le cours.</p>
           <p><b>B</b> : application ou déduction du cours.</p>
           <p><b>C</b> : approfondissement non expliqué dans les pages.</p>
         </div>
@@ -268,7 +268,7 @@
       el("empty").hidden=visible.length!==0;el("question-card").hidden=visible.length===0;el("navigation").hidden=visible.length===0;
       if(!visible.length)return;
       var q=selected(),idx=visible.findIndex(function(it){return it.id===currentId;});
-      setText("topic-pill",topics[q.topic]);setText("source-pill",q.status+" · "+({A:"Dans le cours",B:"À déduire",C:"Complément"}[q.status]));
+      setText("topic-pill",topics[q.topic]);setText("source-pill",q.status+" · "+({A:"Notion du cours",B:"À déduire",C:"Complément"}[q.status]));
       el("source-pill").className="pill status-"+q.status;
       setText("q-number",(idx+1)+" / "+visible.length+" · n° "+String(q.id).padStart(2,"0"));
       setText("question-text",q.question);
